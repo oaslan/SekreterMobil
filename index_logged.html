@@ -1,0 +1,691 @@
+﻿<!DOCTYPE html>
+<html ng-app="belediyeModul">
+<head>
+    <meta charset="utf-8" />
+    <title>Giriş Başarılı?</title>
+    <link href="styles/bootstrap.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.bootstrap.min.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.common-bootstrap.min.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.default.min.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.dataviz.min.css" rel="stylesheet" />
+    <!--<link href="kendo/styles/kendo.dataviz.default.min.css" rel="stylesheet" />-->
+    <link href="kendo/styles/kendo.dataviz.flat.min.css" rel="stylesheet" />
+    <!--<link href="kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" />--> <!-- Day - Week butonlarını sola atar-->
+    
+    <!--Oğuz ASLAN Additional Style Settings-->
+    <!--  <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.default.min.css" rel="stylesheet" />
+    <link href="kendo/styles/kendo.dataviz.default.min.css" rel="stylesheet" />  
+
+
+        <link href="http://cdn.kendostatic.com/2014.2.903/styles/kendo.common.min.css" rel="stylesheet" />
+        <link href="http://cdn.kendostatic.com/2014.2.903/styles/kendo.default.min.css" rel="stylesheet" />
+        <link href="http://cdn.kendostatic.com/2014.2.903/styles/kendo.dataviz.min.css" rel="stylesheet" />
+        <link href="http://cdn.kendostatic.com/2014.2.903/styles/kendo.dataviz.default.min.css" rel="stylesheet" />
+        <script src="http://cdn.kendostatic.com/2014.2.903/js/jquery.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2014.2.903/js/angular.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2014.2.903/js/kendo.all.min.js"></script> -->
+
+
+    <!--<link href="styles/main.css" rel="stylesheet" />-->
+    <link href="styles/style.css" rel="stylesheet" />
+    
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8" src="kendo/js/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="scripts/angular.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="kendo/js/kendo.all.min.js"></script>
+    <!--<script type="text/javascript" charset="utf-8" src="kendo/js/kendo.timezones.min.js"></script>-->
+    <script type="text/javascript" charset="utf-8" src="scripts/app.js"></script>
+    <script type="text/javascript" charset="utf-8" src="scripts/angular-kendo.js"></script>
+    <script type="text/javascript" charset="utf-8" src="scripts/baskanmodel.js"></script>
+
+    <!--Oğuz ASLAN Additional Style Settings-->
+    <style scoped>
+        .datePicker {
+            font-size: 15px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .randevu-template p {
+            margin: 5px 0 0;
+        }
+
+        .randevu-template div {
+            font-size: 18px;
+        }
+
+        .randevu-template h3 {
+            padding: 0 2px 2px;
+            margin: 2px 2px 2px 2px;
+            font-size: 12px;
+            color:black;
+        }
+
+        .randevu-template a {
+            color: #ffffff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .k-state-hover .randevu-template a,
+        .randevu-template a:hover {
+            color: #000000;
+        }
+
+        .k-scheduler-table th {
+            font-size: 14.7px;
+        }
+
+        .alert-info {
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+            color:darkred;
+            /*color: #31708f;*/
+        }
+
+        .k-event,.k-task-complete{
+            border-color:#f35800; /*#ffdac1    #f8a398*/
+            background:#f35800 0 -257px url('kendo/styles/textures/highlight.png') repeat-x;
+            color:#2e2e2e;
+        }
+
+        /*kendoDatePicker ve ilerigeribugün butonları çevresindeki boşluğu düzenler : padding*/
+        .km-list>li,.km-root .km-listview-link,.km-root .km-listview-label{
+            margin:0;
+            /*display:block;*/
+            position:relative;
+            list-style-type:none;
+            vertical-align:middle;
+            -moz-box-sizing:border-box;
+            -webkit-box-sizing:border-box;
+            box-sizing:border-box;
+            padding:.2em .2em;
+        }
+
+        /* Scheduler Navigation çubuğu yazı boyutunu düzenler.*/
+        .YaziBoyutu {
+            font-size:12px;
+        }
+
+
+
+
+        /*.k-icon, .k-tool-icon, .k-grouping-dropclue, .k-drop-hint, .k-column-menu .k-sprite, .k-grid-mobile .k-resize-handle-inner:before, .k-grid-mobile .k-resize-handle-inner:after {
+            background-image: url('Default/sprite.png');
+            border-color: transparent;
+        }*/
+
+        /*.k-i-calendar {
+            background-position: -32px -176px;
+        }*/
+
+    </style>
+
+    <script src="http://cdn.kendostatic.com/2013.2.716/js/cultures/kendo.culture.tr-TR.min.js" type="text/javascript"></script>
+    
+    <script type="text/javascript" src="scripts/date.js"></script>
+    <!--<script type="text/javascript" src="scripts/jquery.iecors.js" ></script>-->
+
+</head>
+<body id="belediyeCTRL" ng-controller="belediyeCTRL" onload="onLoad()">
+
+
+    <div data-role="view" id="tabstrip-randevular" data-title="Randevular" data-layout="mobile-tabstrip">
+        <!--
+             <ul id="tarihList" data-role="listview" data-style="inset" style="margin:4px 4px 0 4px;">
+                <li style="margin: 0 0 0 0; height:92px; width:100%;">
+                    <div style="width:100%; height:38px; margin:0 0 0 0;">
+                        <label style="width:23%; float:left; text-align:left; font-size:13px">Önceki<br>Gün</label>
+                        <input style="width:50%;text-align:center" type="date" id="Tarih" class="datePicker" ng-model="Tarih">
+                        <label style="width:23%; float:right; text-align:right; font-size:13px">Sonraki<br>Gün</label>
+                    </div>
+                    <div style="width:100%; height:42px; margin: 0 0 0 0;">
+                        <div style="width:26%;float:left">
+                            <a id="Dun" data-role="button" style="background-image:url(styles/images/left-arrow.gif); background-size: 100%; width: 32px;height: 32px;"></a>
+                        </div>
+                        <a id="Bugun" data-role="button" class="label label-danger" style="width:44%; height:26px; text-align:center; font-size:14px; background-color:#007E6F; color:white; margin-top:11px"> Bugün </a>
+                        <div style="width:26%;float:right">
+                            <a id="Yarin" data-role="button" style="background-image:url(styles/images/right-arrow.gif); background-size: 100%; width: 32px;height: 32px; float:right"></a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+                -->
+
+        <!--
+            <ul id="tarihList" data-role="listview" data-style="inset" style="margin:2px 4px 0 4px; background-color:#f4f4f4;">
+                <li class="k-scheduler-toolbar" style="height:36px; float:left; text-align:left; margin:3px 0 0 0; padding:0 0 0 0; background-color:#f4f4f4; border-width: 0 0 0 0;">
+                    <ul class="k-reset" style="width:100%; background-color:#f4f4f4; display:inline-table">
+                        <li class="k-state-default" style="width:60px; height:30px; text-align:center; margin:0 0 0 0; padding:0 0 0 0; background-color:#f4f4f4; display:inline-table">
+                            <a  role="button" class="k-link" style="margin-top:6px; font-size:12px; color:#428bca">
+                            Bugün</a>
+                        </li>
+                        <li class="k-state-default" style="width:35px; height:30px; border-width: 1px 1px 1px 0; margin:0 0 0 0; padding:3.5px 0 0 0; background-color:#f4f4f4;  text-align:center; display:inline-table">
+                            <a  role="button" class="k-link">
+                            <span class="k-icon k-i-arrow-w" style="margin-top:3px; font-size:12px;"></span>
+                            </a>
+                        </li>
+                        <li class="k-state-default" style="width:35px; height:30px; border-width: 1px 1px 1px 0; margin:0 0 0 0; padding:3.5px 0 0 0; background-color:#f4f4f4;  text-align:center; display:inline-table">
+                            <a  role="button" class="k-link">
+                                <span class="k-icon k-i-arrow-e" style="margin-top:3px; font-size:12px;"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li style="width:40%; height:36px; float:right; text-align:right; margin: 0 0 0 0;  background-color:#f4f4f4; border-width: 0 0 0 0;">
+                    <input style="width:100%;text-align:center" type="date" id="Tarih" class="datePicker" ng-model="Tarih">
+                </li>
+            </ul>
+            -->
+
+            <ul id="tarihList" data-role="listview" data-style="inset" style="margin:2px 4px 0 4px; background-color:#f4f4f4;">
+                <li style="width:40%; height:36px; float:right; text-align:right; margin: 0 0 0 0;  background-color:#f4f4f4; border-width: 0 0 0 0;">
+                    <input style="width:100%;text-align:center" type="date" id="Tarih" class="datePicker" ng-model="Tarih">
+                </li>
+                <li style="background-color:#f4f4f4; border-width: 0 0 0 0;">
+                    <div class="btn-group">
+                        <button id="Bugun" type="button" class="btn btn-default"><i class="glyphicon"><span style="color:#428bca;font-weight: bold; font: normal 0.9em 'HelveticaNeue Light','Roboto Light','Slate Light','Segoe WP',NokiaPureTextLight,sans-serif;">Bugün</span></i></button>
+                        <button id="Dun" type="button" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i></button>
+                        <button id="Yarin" type="button" class="btn btn-default"><i class="glyphicon glyphicon-arrow-right"></i></button>
+                    </div>
+                </li>
+            </ul>
+
+            <ul data-role="listview" data-style="inset" style="margin:2px 4px 0 4px;">
+                <li ng-show="Randevular.length < 1 || Randevular == null" style="text-align:center;">Randevu Kaydı Yok</li>
+                <li ng-repeat="r in Randevular" style="margin: 0 0 0 0; width:100%;" onclick="RandevuClick(this)">
+                    <div class="news" style="margin:0 0 0 0; width:100%; height:100%;">
+                        <div class="news pull-left news_icon" style="margin:0 0 0 0;">
+                            <span class="label label-primary">{{r.BaslamaSaati}}</span>
+                            <label></label>
+                            <img src="styles/images/news_icon.gif" alt="" title="">
+                        </div>
+                        <div class="media-body" style="margin:0 0 0 0;">
+                            <h2 style="font-size:13px;"><strong>{{r.Yeri | uppercase}}</strong></h2>
+                            <div class="news_content" style="margin-right:12px">
+                                <span style="font-size:10px;" ng-style="Set_Color(r.KonuRenk)"><strong>{{ r.Konu | uppercase}}</strong></span><br>
+                                <span style="font-size:10px;" ng-show="false"><strong>{{ r.KonuRenk | uppercase}}</strong></span><br>
+                                <p style="font-size:13px" id="SecilenRandevuId" ng-show="false">{{ r.Id }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="read_more_link" style=" width:100%; height:14px; margin: 0 0 0 0; text-decoration:none; color:#f7941d; font-size:12px; text-align:right;">
+                        Detay
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    <div data-role="view" id="tabstrip-aramalar" data-title="Arayanlar" data-layout="mobile-tabstrip">
+        <ul data-role="listview" data-style="inset" style="margin:2px 4px 0 4px;">
+            <li ng-show="Arayanlar.length < 1 || Arayanlar == null" style="text-align:center;">Arama Kaydı Yok</li>
+            <li ng-repeat="a in Arayanlar" style="margin: 0 0 0 0; width:100%;" onclick="ArayanClick(this)">
+                <div class="news" style="margin:0 0 0 0; width:100%; height:100%;">
+                    <div class="news pull-left news_icon" style="margin:0 0 0 0;">
+                        <span class="label label-primary">{{a.AramaSaati}}</span>
+                        <label></label>
+                        <img src="styles/images/testimonials_icon.gif" style="width:22px; height:40px; align-content:center" alt="" title="">
+                    </div>
+                    <div class="media-body" style="margin:0 0 0 0;">
+                        <h2 style="font-size:13px;"><strong>{{a.ArayanAdi | uppercase}}</strong></h2>
+                        <div class="news_content" style="margin-right:12px; font-size:12px">
+                            <span style="font-size:10px;"><strong>{{ a.ArayanSoyadi | uppercase}}</strong></span><br>
+                            <p ng-show="a.Konu.length > 0" class="label label-success" style="font-size:10px;">Konu:</p>{{ a.Konu }}
+                            <p style="font-size:10px" id="SecilenArayanId" ng-show="false">{{ a.Id }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="read_more_link" style=" width:100%; height:14px; margin: 0 0 0 0; text-decoration:none; color:#f7941d; font-size:12px; text-align:right;">
+                    Detay
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div data-role="view" id="tabstrip-ajanda" data-title="Randevular" data-layout="mobile-tabstrip">
+        <div id="scheduler"></div>
+    </div>
+
+    <script id="event-template" type="text/x-kendo-template">
+        <div class="randevu-template">
+            <h3>#: title #</h3>
+        </div>
+    </script>
+
+    <div data-role="view" id="tabstrip-raporlar" data-title="Raporlar" data-layout="mobile-tabstrip">
+        <ul data-role="listview" data-style="inset" data-type="group" style="font-size:13px">
+            <li>
+                Gider Bütçesi Raporları
+                <ul>
+                    <li><a href="#rapor1">Hazırlanan Gider Bütçesinin Gerçekleşen Gider Bütçesine Oranı</a></li>
+                </ul>
+            </li>
+            <li>
+                Müdürlük Gider Bütçesi Raporları
+                <ul>
+                    <li><a href="#rapor2">Müdürlük Bazında Hazırlanan Gider Bütçelerinin Toplam Gider Bütçesine Oranı</a></li>
+                    <li><a href="#rapor3">Müdürlük Bazında Gerçekleşen Gider Bütçelerinin Toplam Gider Bütçesine Oranı</a></li>
+                    <li><a href="#rapor4">Müdürlük Bazında Gerçekleşen Personel Giderlerinin Toplam Gelir Bütçesine Oranı</a></li>
+                    <li><a href="#rapor5">Müdürlük Bazında Gerçekleşen Gider Bütçelerinin Gerçekleşen Gider Bütçelerine Oranı</a></li>
+                </ul>
+            </li>
+            <li>
+                Gelir Bütçesi Raporları
+                <ul>
+                    <li><a href="#rapor6">Hazırlanan Gelir Bütçesinin Gerçekleşen Gelir Bütçesine Oranı</a></li>
+                </ul>
+            </li>
+            <li>
+            <li>
+                Tahsilat Bilgileri
+                <ul>
+                    <li><a href="#rapor7">Tahsildar Bazında Yapılan Tahsilat Bilgisi</a></li>
+                    <li><a href="#rapor8">Gelir Türü Bazında Yapılan Tahsilat Bilgisi</a></li>
+                </ul>
+            </li>
+            <li>
+                Muhasebe Bilgileri
+                <ul>
+                    <li><a href="#rapor9">Banka Durum Bilgisi</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div data-role="view" id="RandevuDetay" data-title="Randevu Detay" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:17px">
+            Not Ekle
+        </p>
+
+
+        <form>
+            <div>
+                <ul data-role="listview" data-style="inset">
+                    <li ng-repeat="r in SecilenRandevu" class="km-group-container">
+                        <ul class="km-list" style="font-size:12px">
+                            <li ng-show="false">
+                                <div style="float:left; width:30%" class="Detay">Id : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="sales-up">{{r.Id}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:33%" class="Detay">Randevu Yeri : </div>
+                                <div style="float:right; width:67%; text-align:right"><span class="sales-up">{{r.Yeri}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:33%" class="Detay">Başlama Saati : </div>
+                                <div style="float:right; width:67%; text-align:right"><span class="sales-down">{{r.BaslamaSaati}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:20%" class="Detay">Konusu : </div>
+                                <div style="float:right; width:80%; text-align:right"><span class="value" ng-style="Set_Color(r.KonuRenk)">{{r.Konu}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:32%" class="Detay">Hatırlatma : </div>
+                                <div style="float:right; width:78%; text-align:right"><span class="value" ng-style="Set_Color(r.HatirlatmaRenk)">{{r.Hatirlatma}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%" class="Detay">Açıklama : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="value" id="RandevuAciklamaData" ng-show="r.Aciklama.length > 0" text="{{r.Aciklama}}">{{r.Aciklama}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%" class="Detay">Açıklama Ekle: </div>
+                                <input type="text" name="enter" style="float:right; width:70%;" class="enter" id="AciklamaId" value="" />
+                            </li>
+                            <li>
+                                <div class="buttonArea">
+                                    <input type="button" value="Kaydet" class="btn btn-primary btn-block" onclick="RandevuAciklamaEkle();" />
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+
+    <div data-role="view" id="ArayanDetay" data-title="Arayan Detay" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:13px">
+            Not Ekle
+        </p>
+
+        <form>
+            <div>
+                <ul data-role="listview" data-style="inset">
+                    <li ng-repeat="a in SecilenArayan" class="km-group-container">
+                        <ul class="km-list" style="font-size:12px;">
+                            <li ng-show="false">
+                                <div style="float:left; width:30%" class="Detay">Id : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="sales-up">{{a.Id}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%" class="Detay">Adı Soyadı : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="sales-up">{{a.ArayanAdi}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%" class="Detay">Ünvanı : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="sales-up">{{a.ArayanSoyadi}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%" class="Detay">Arama Saati / Talep : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="sales-down">{{a.AramaSaati}} / {{a.KonuTuru}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:20%" class="Detay">Konu : </div>
+                                <div style="float:right; width:80%; text-align:right"><span class="value">{{a.Konu}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:20%" class="Detay">Telefon : </div>
+                                <div style="float:right; width:80%; text-align:right"><span class="value">{{a.Telefon}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%" class="Detay">Sonuç : </div>
+                                <div style="float:right; width:70%; text-align:right"><span class="value" id="ArayanSonucData" ng-show="a.Sonuc.length > 0" text="{{a.Sonuc}}">{{a.Sonuc}}</span></div>
+                            </li>
+                            <li>
+                                <div style="float:left; width:30%" class="Detay">Sonuç Ekle: </div>
+                                <input type="text" name="enter" style="float:right; width:70%;" class="enter" id="SonucId" value="" />
+                            </li>
+                            <li>
+                                <div class="buttonArea">
+                                    <input type="button" value="Kaydet" class="btn btn-primary btn-block" onclick="ArayanSonucEkle();" />
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+
+    <div data-role="view" id="rapor1" data-title="Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:13px">
+            Hazırlanan Gider Bütçesinin Gerçekleşen Gider Bütçesine Oranı
+        </p>
+        <form ng-submit="GiderButceOranBilgisiForm()">
+            <div>
+                <ul data-role="listview" data-style="inset">
+                    <li><label>Başlangıç Yılı <select data-ng-options="o for o in Yillar" data-ng-model="sorguBaslangicYil"></select></label></li>
+                    <li><label>Bitiş Yılı <select data-ng-options="o for o in Yillar" data-ng-model="sorguBitisYil"></select></label></li>
+                    <li>
+                        <div class="buttonArea">
+                            <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="GiderButceOranBilgisiForm()" value="Rapor Oluştur" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <div class="chart-wrapper">
+            <div id="rapor1-chart"></div>
+        </div>
+        <ul data-role="listview" data-style="inset" data-type="group" style="font-size:17px">
+            <li ng-repeat="r in GiderButceOranBilgisiSorguSonuc" class="km-group-container">
+                <div class="km-group-title">{{r.Yil}}</div>
+                <ul class="km-list" style="font-size:12px">
+                    <li>Bütçe : <span class="sales-up">{{r.Butce | number:0}}</span></li>
+                    <li>Harcama : <span class="sales-down">{{r.Harcama | number:0}}</span></li>
+                    <li>Oran : <span class="value"> % {{r.Oran | number:0}}</span></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div data-role="view" id="rapor2" data-title="Müdürlük Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:13px">
+            Müdürlük Bazında Hazırlanan Gider Bütçelerinin Toplam Gider Bütçesine Oranı
+        </p>
+        <form ng-submit="Rapor2()">
+            <div>
+                <ul data-role="listview" data-style="inset" style="font-size:14px">
+                    <li><label>Yıl <select data-ng-options="o for o in Yillar" data-ng-model="sorguBaslangicYil"></select></label></li>
+                    <li>
+                        <div class="buttonArea">
+                            <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor2()" value="Rapor Oluştur" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <div class="chart-wrapper">
+            <div id="rapor2-chart"></div>
+        </div>
+        <ul data-role="listview" data-style="inset" data-type="group" style="font-size:15px">
+            <li ng-repeat="r in Rapor2Sonuc" class="km-group-container">
+                <div class="km-group-title">{{r.Aciklama}}</div>
+                <ul class="km-list" style="font-size:13px">
+                    <li>Bütçe : <span class="sales-up">{{r.MeclisKabul | number:0}}</span></li>
+                    <li>Oran : <span class="value">{{r.KabulGiderOran}}</span></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div data-role="view" id="rapor3" data-title="Müdürlük Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:13px">
+            Müdürlük Bazında Gerçekleşen Gider Bütçelerinin Toplam Gider Bütçesine Oranı
+        </p>
+        <form ng-submit="Rapor3()">
+            <div>
+                <ul data-role="listview" data-style="inset" style="font-size:14px">
+                    <li><label>Yıl <select data-ng-options="o for o in Yillar" data-ng-model="sorguBaslangicYil"></select></label></li>
+                    <li>
+                        <div class="buttonArea">
+                            <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor3()" value="Rapor Oluştur" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <div class="chart-wrapper">
+            <div id="rapor3-chart"></div>
+        </div>
+        <ul data-role="listview" data-style="inset" data-type="group" style="font-size:14px">
+            <li ng-repeat="r in Rapor3Sonuc" class="km-group-container">
+                <div class="km-group-title">{{r.Aciklama}}</div>
+                <ul class="km-list" style="font-size:13px">
+                    <li>Harcama : <span class="sales-down">{{r.Harcama | number}}</span></li>
+                    <li>Oran : <span class="value">{{r.Oran}}</span></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div data-role="view" id="rapor4" data-title="Müdürlük Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:13px">
+            Müdürlük Bazında Gerçekleşen Personel Giderlerinin Toplam Gelir Bütçesine Oranı
+        </p>
+        <form ng-submit="Rapor4()">
+            <div>
+                <ul data-role="listview" data-style="inset" style="font-size:14px">
+                    <li><label>Yıl <select data-ng-options="o for o in Yillar" data-ng-model="sorguBaslangicYil"></select></label></li>
+                    <li>
+                        <div class="buttonArea">
+                            <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor4()" value="Rapor Oluştur" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <div class="chart-wrapper">
+            <div id="rapor4-chart"></div>
+        </div>
+        <ul data-role="listview" data-style="inset" data-type="group" style="font-size:15px">
+            <li ng-repeat="r in Rapor4Sonuc" class="km-group-container">
+                <div class="km-group-title">{{r.Aciklama}}</div>
+                <ul class="km-list" style="font-size:13px">
+                    <li>Harcama : <span class="sales-down">{{r.Harcama | number:2}}</span></li>
+                    <li>Bütçe : <span class="sales-up">{{r.Butce | number:2}}</span></li>
+                    <li>Oran : <span class="value"><strong>% {{r.Oran | number:2}}</strong></span></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div data-role="view" id="rapor5" data-title="Müdürlük Gider Bütçesi Raporları" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:12px">
+            Müdürlük Bazında Gerçekleşen Gider Bütçelerinin Gerçekleşen Gider Bütçelerine Oranı
+        </p>
+        <form ng-submit="Rapor5()">
+            <div>
+                <ul data-role="listview" data-style="inset" style="font-size:14px">
+                    <li><label>Yıl <select data-ng-options="o for o in Yillar" data-ng-model="sorguBaslangicYil"></select></label></li>
+                    <li>
+                        <div class="buttonArea">
+                            <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor5()" value="Rapor Oluştur" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <div class="chart-wrapper">
+            <div id="rapor5-chart"></div>
+        </div>
+        <ul data-role="listview" data-style="inset" data-type="group" style="font-size:15px">
+            <li ng-repeat="r in Rapor5Sonuc" class="km-group-container">
+                <div class="km-group-title">{{r.Aciklama}}</div>
+                <ul class="km-list" style="font-size:13px">
+                    <li>Bütçe : <span class="sales-up">{{r.Butce | number:0}}</span></li>
+                    <li>Harcama : <span class="sales-down">{{r.Harcama | number:0}}</span></li>
+                    <li>Oran : <span class="value">% {{r.Oran | number:0}}</span></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div data-role="view" id="rapor6" data-title="Gelir Bütçesi Raporları" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:13px">
+            Hazırlanan Gelir Bütçesinin Gerçekleşen Gelir Bütçesine Oranı
+        </p>
+        <form ng-submit="Rapor6()">
+            <div>
+                <ul data-role="listview" data-style="inset">
+                    <li><label>Başlangıç Yılı <select data-ng-options="o for o in Yillar" data-ng-model="sorguBaslangicYil"></select></label></li>
+                    <li><label>Bitiş Yılı <select data-ng-options="o for o in Yillar" data-ng-model="sorguBitisYil"></select></label></li>
+                    <li>
+                        <div class="buttonArea">
+                            <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor6()" value="Rapor Oluştur" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <div class="chart-wrapper">
+            <div id="rapor6-chart"></div>
+        </div>
+        <ul data-role="listview" data-style="inset" data-type="group" style="font-size:17px">
+            <li ng-repeat="r in Rapor6Sonuc" class="km-group-container">
+                <div class="km-group-title">{{r.Yil}}</div>
+                <ul class="km-list" style="font-size:12px">
+                    <li>Tahsilat : <span class="sales-up">{{r.Tahsilat | number:2}}</span></li>
+                    <li>Bütçe : <span class="sales-down">{{r.Butce | number:2}}</span></li>
+                    <li>Oran : <span class="value"> % {{r.Oran | number:2}}</span></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div data-role="view" id="rapor7" data-title="Tahsilat Bilgileri" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:13px">
+            Tahsildar Bazında Yapılan Tahsilat Bilgisi
+        </p>
+        <form ng-submit="Rapor7()">
+            <div>
+                <ul data-role="listview" data-style="inset">
+                    <li><label>Başlangıç Yılı <input type="date" data-ng-model="BaslangicYil" /></label></li>
+                    <li><label>Bitiş Yılı <input type="date" data-ng-model="BitisYil" /></label></li>
+                    <li>
+                        <div class="buttonArea">
+                            <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor7()" value="Rapor Oluştur" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <div class="chart-wrapper">
+            <div id="rapor7-chart"></div>
+        </div>
+        <ul data-role="listview" data-style="inset" data-type="group" style="font-size:15px">
+            <li ng-repeat="r in Rapor7Sonuc" class="km-group-container">
+                <div class="km-group-title">{{r.IslemTipiAdi}}</div>
+                <ul class="km-list" style="font-size:13px">
+                    <li>Tutar : <span class="sales-up">{{r.IslemTipiTahsilatTutari}}</span></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div data-role="view" id="rapor8" data-title="Tahsilat Bilgileri" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:13px">
+            Gelir Türü Bazında Yapılan Tahsilat Bilgisi
+        </p>
+        <form ng-submit="Rapor8()">
+            <div>
+                <ul data-role="listview" data-style="inset">
+                    <li><label>Başlangıç Yılı <input type="date" data-ng-model="BaslangicYil" /></label></li>
+                    <li><label>Bitiş Yılı <input type="date" data-ng-model="BitisYil" /></label></li>
+                    <li>
+                        <div class="buttonArea">
+                            <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor8()" value="Rapor Oluştur" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <div class="chart-wrapper">
+            <div id="rapor8-chart"></div>
+        </div>
+        <ul data-role="listview" data-style="inset" data-type="group" style="font-size:15px">
+            <li ng-repeat="r in Rapor8Sonuc" class="km-group-container">
+                <div class="km-group-title">{{r.GelirAdi}}</div>
+                <ul class="km-list" style="font-size:13px">
+                    <li>Tutar : <span class="sales-up">{{r.Tutar | number:2}}</span></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div data-role="view" id="rapor9" data-title="Muhasebe Bilgileri" data-layout="mobile-tabstrip">
+        <p class="alert alert-info text-center" style="font-size:13px">
+            Banka Durum Bilgisi
+        </p>
+        <form ng-submit="Rapor9()">
+            <div>
+                <ul data-role="listview" data-style="inset">
+                    <li><label>Tarih <input type="date" data-ng-model="BaslangicYil" /></label></li>
+                    <li>
+                        <div class="buttonArea">
+                            <input type="submit" data-role="button" class="btn btn-primary btn-block" ng-click="Rapor9()" value="Rapor Oluştur" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+        <ul data-role="listview" data-style="inset" data-type="group" style="font-size:14px">
+            <li ng-repeat="r in Rapor9Sonuc" class="km-group-container">
+                <div class="km-group-title">{{r.Aciklama}}</div>
+                <ul class="km-list" style="font-size:13px">
+                    <li>Nakit : <span class="sales-up">{{r.BankaDurumu | number:2}}</span></li>
+                    <li>Çek : <span class="sales-up">{{r.CekDurmu | number:2}}</span></li>
+                    <li>Toplam : <span class="sales-up">{{r.BankaBakiye | number:2}}</span></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+    <div data-role="view" id="tabstrip-cikis" data-title="Çıkış" data-layout="mobile-tabstrip">
+        <p class="alert alert-success text-center">Çıkış Yapılıyor..</p>
+    </div>
+    
+    <div data-role="layout" data-id="mobile-tabstrip" >
+        <header data-role="header" style="width:100%;">
+            <div data-role="navbar" style=" height:40px;">
+                <a data-role="backbutton" class="fui-arrow-left" style="background-image:url(styles/images/back-button.png); background-size: 100%; width:81px; height:31px; float:left; margin-left:14px; margin-top:5px;"></a>
+                <span data-role="view-title" style="font-size:20px; color:darkred; margin-top:5px;"></span>
+            </div>
+        </header>
+        <p>TabStrip</p>
+        <div data-role="footer">
+            <div id="tabstrip" data-role="tabstrip" data-select="onSelect">
+                <a id="randevu" href="#tabstrip-randevular" data-icon="recents">Randevular</a>
+                <a id="arama" href="#tabstrip-aramalar" data-icon="phone">Aramalar</a>
+                <a id="ajanda" href="#tabstrip-ajanda" data-icon="refresh">Ajanda</a>
+                <!--<a href="#tabstrip-raporlar" data-icon="bookmarks">Raporlar</a>-->
+                <a href="#tabstrip-cikis" id="cikis" data-tap="Cikis" data-icon="more">Çıkış</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
