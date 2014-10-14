@@ -953,6 +953,45 @@ $(function () {
     //console.log(document);
 });
 
+function EventTemplateFunc(val) {
+    //console.log($(val).find("#SecilenId")[0].innerHTML);
+    var RandevuId = $(val).find("#SecilenId")[0].innerHTML;
+    RandevuGetirById(RandevuId);
+};
+
+function RandevuGetirById(RandevuId) {
+    //console.log(RandevuId);
+    //console.log($("#tabstrip-randevulaaccessTokenible"));
+    token = window.localStorage.getItem("accessToken");
+    if (token === undefined || token === null || token === "")
+        window.location = "index.html";
+    scope = angular.element(document.getElementById("belediyeCTRL")).scope();
+
+    $.ajax({
+        type: "POST",
+        data: { 'accessToken': token, SecilenRandevuId: RandevuId },
+        url: app.endpoints.randevuDetay,
+        dataType: "json",
+        crossDomain: true,
+        success: function (result) {
+            //console.log(result);
+            if (result != null) {
+                scope.$apply(function () {
+                    scope.SecilenRandevu = result.SecilenRandevu;
+                    window.location.href = "#RandevuDetay";
+                });
+            }
+            else {
+                window.localStorage.removeItem("accessToken");
+                window.location = "index.html";
+            }
+        },
+        error: function () {
+            alert("Randevu seçilirken bir hata meydana geldi.");
+        }
+    });
+};
+
 function AjandaTarihDegistir(tar) {
     var scheduler = $("#scheduler").data("kendoScheduler");
     var dizi = tar.split(".");
@@ -1055,40 +1094,10 @@ function AjandaRandevuFetchData(accessToken, bugun){
 };
 
 function RandevuClick(value) {
-
-    //console.log($("#tabstrip-randevulaaccessTokenible"));
-    token = window.localStorage.getItem("accessToken");
-    if (token === undefined || token === null || token === "")
-        window.location = "index.html";
-    scope = angular.element(document.getElementById("belediyeCTRL")).scope();
-
     //console.log(value);
     RandevuId = $(value).find("#SecilenRandevuId")[0].innerHTML;
     //console.log(RandevuId);
-
-    $.ajax({
-        type: "POST",
-        data: { 'accessToken': token, SecilenRandevuId: RandevuId },
-        url: app.endpoints.randevuDetay,
-        dataType: "json",
-        crossDomain: true,
-        success: function (result) {
-            //console.log(result);
-            if (result != null) {
-                scope.$apply(function () {
-                    scope.SecilenRandevu = result.SecilenRandevu;
-                    window.location.href = "#RandevuDetay";
-                });
-            }
-            else {
-                window.localStorage.removeItem("accessToken");
-                window.location = "index.html";
-            }
-        },
-        error: function () {
-            alert("Randevu seçilirken bir hata meydana geldi.");
-        }
-    });
+    RandevuGetirById(RandevuId);
 };
 
 function ArayanClick(value)
