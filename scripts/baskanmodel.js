@@ -792,6 +792,7 @@ $(function () {
             endTime: new Date("2013/6/13 22:00"),
             //selectable:true,
             //height: 400,
+            //height: kendo.support.mobileOS.wp,
             views: [
                 { type: "day"},
                 { type: "week", selected:true, selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
@@ -800,6 +801,7 @@ $(function () {
             ],
             editable: false,
             eventTemplate: $("#event-template").html(),
+            //mobile: "phone",
             timezone: "Etc/UTC",
             dataSource: dataSource1,
             /*resources: [
@@ -1275,11 +1277,11 @@ function addDays(date, days) {
 }
 
 function getSaat(value) {
-    return (value.split(":"))[0];
+    return ((value.split(":"))[0]).trim();
 };
 
 function getDakika(value) {
-    return (value.split(":"))[1];
+    return ((value.split(":"))[1]).trim();
 };
 
 /*function getDate() {
