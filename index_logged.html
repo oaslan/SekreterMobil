@@ -8,6 +8,7 @@
     <link href="kendo/styles/kendo.bootstrap.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.common-bootstrap.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.common.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.2.716/styles/kendo.rtl.min.css">
     <link href="kendo/styles/kendo.default.min.css" rel="stylesheet" />
     <link href="kendo/styles/kendo.dataviz.min.css" rel="stylesheet" />
     <!--<link href="kendo/styles/kendo.dataviz.default.min.css" rel="stylesheet" />-->
@@ -107,6 +108,8 @@
         /* Scheduler Navigation çubuğu yazı boyutunu düzenler.*/
         .YaziBoyutu {
             font-size:12px;
+            margin:2px 0 2px 0;
+            padding:0 0 0 0;
         }
 
 
@@ -249,7 +252,7 @@
     </div>
 
     <script id="event-template" type="text/x-kendo-template">
-        <div class="randevu-template" onclick="EventTemplateFunc(this)" style="width:100%; height:100%;">
+        <div class="randevu-template" style="width:100%; height:100%;"> <!--  onclick="EventTemplateFunc(this)" -->
             <p id="SecilenId" hidden>#: taskId #</p>
             <h3>#: title #</h3>
         </div>

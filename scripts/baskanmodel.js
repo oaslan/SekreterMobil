@@ -786,24 +786,64 @@ $(function () {
     $(document).ready(function () {
         kendo.culture('tr-TR');
 
+        //console.log(getBrowserWindowSize().height);
+
         $("#scheduler").kendoScheduler({
             date: new Date(today),/*new Date("2014/01/16"),*/
             startTime: new Date("2013/6/13 8:00"),
             endTime: new Date("2013/6/13 22:00"),
             //selectable:true,
-            //height: 400,
-            //height: kendo.support.mobileOS.wp,
+            height: getBrowserWindowSize().height-80,
+            majorTick: 60,                  // Soldaki saat aralığı.(1 saat)
+            showWorkHours: false,           // İlk açılışta mesai saatlerini göstermesin tümünü göstersin.
+            allDaySlot: false,              // Gridin üstüne allDay satırını kaldırır.
+            minorTickCount: 2,             // İki saat arasının kaç aralığa bölünmesi gerektiğini setler.
+           // mobile: true,                   //Render edilirken mobile göre düzenlenir.
             views: [
                 { type: "day"},
                 { type: "week", selected:true, selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
                 //"month",
                 { type: "agenda", selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
             ],
-            editable: false,
-            eventTemplate: $("#event-template").html(),
+            //editable: true,
+            editable: {
+                destroy: false,                                      //Event detaya tıklandığında silme işlemi disable edilir.
+                update: false,
+                create: false
+            },
+            eventTemplate: $("#event-template").html(),             //Gridde gösterilecek randevu içeriği.
             //mobile: "phone",
-            timezone: "Etc/UTC",
-            dataSource: dataSource1,
+            timezone: "Etc/UTC",                                    //Datepicker durumu.
+            footer:false,
+            /*footer: {                                               //Mesai saatlerini göster butonu inaktif yapar.
+                command: true
+            },*/
+            messages: {                                             //Mesai saatleri göster butonu yazısını günceller.
+                showWorkDay: "Mesai Saatlerini Göster",
+                showFullDay: "Tüm Günü Göster",
+                allDay: "Gün",
+                cancel: "Vazgeç",
+                deleteWindowTitle: "Randevu Sil",
+                destroy: "Sil",
+                save: "Kaydet",
+                today: "Bugün",
+                editor: {
+                    allDayEvent: "All Day event",            //Editable:true iken açılan kısımda alldayevent check box text yazısı
+                    description: "Description",                   //Editable:true iken açılan kısımda description text yazısı
+                    editorTitle: "Edit event",
+                    start: "Start",
+                    end: "End",
+                    endTimezone: "End date timezone",
+                    repeat: "Repeat the event",
+                    title: "Title of the event"   //Yeni event eklerken title text yazısı.
+                },
+                views: {
+                    day: "Gün",
+                    week: "Hafta",
+                    agenda: "Ajanda"
+                }
+            },
+            dataSource: dataSource1
             /*resources: [
             {
                 color : "red"
@@ -894,6 +934,23 @@ $(function () {
 
         var scheduler = $("#scheduler").data("kendoScheduler");
 
+        /*$(window).resize(function () {
+            var gridElement = $("#scheduler");
+            var newGridHeight = getBrowserWindowSize().height - 100;
+
+            gridElement.height(newGridHeight);
+            $("#scheduler").data("kendoScheduler").refresh();
+        });*/
+
+        /*$(window).resize(function () {
+
+
+            console.log($(window).height() + " -" + getBrowserWindowSize().height);
+            //scheduler.element.height(getBrowserWindowSize().height - 100);
+            scheduler.height = getBrowserWindowSize().height - 100;
+        });*/
+
+
         $("#Tarih").kendoDatePicker({
             value: (today.getDate() + "." + (today.getMonth() + 1) + "." + today.getFullYear()),
             change: function () {
@@ -953,7 +1010,29 @@ $(function () {
     });
     //console.log("VALUE : " + $("k-state-default k-nav-current").innerHTML);
     //console.log(document);
+
 });
+
+function getBrowserWindowSize() {
+    var myWidth = 0, myHeight = 0;
+    if (typeof (window.innerWidth) == 'number') {
+        //İnternet explorer değilse
+        myWidth = window.innerWidth;
+        myHeight = window.innerHeight;
+    }
+    else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+        //internet Explorer 6+ 
+        myWidth = document.documentElement.clientWidth;
+        myHeight = document.documentElement.clientHeight;
+    }
+    else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+        //internet Explorer 4 compatible
+        myWidth = document.body.clientWidth;
+        myHeight = document.body.clientHeight;
+    }
+
+    return { width: myWidth, height: myHeight };
+};
 
 function EventTemplateFunc(val) {
     //console.log($(val).find("#SecilenId")[0].innerHTML);
@@ -1335,9 +1414,17 @@ function onSelect(e) {
         fetchData(token);
     }
     else if (item.attr("id") === "ajanda") {
+        
        // $("#tarihList").prependTo("#tabstrip-ajanda");
         //fetchData(token);
         //ajandaRandevuFetchData(token);
+        $(window).resize(function () {
+            //$("#scheduler").height(getBrowserWindowSize().height - 100);
+            console.log($(window).height() + " -" + getBrowserWindowSize().height);
+            $("#scheduler")[0].clientHeight;
+            console.log($("#scheduler").css("height", (getBrowserWindowSize().height-80)));
+            $("#scheduler").data("kendoScheduler").refresh();
+        });
     }
     else if (item.attr("id") === "cikis") {
         $.ajax({
