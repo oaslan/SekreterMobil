@@ -112,7 +112,13 @@
             padding:0 0 0 0;
         }
 
+        .k-scheduler-content {
+            height:100%;
+        }
 
+        .k-scheduler-layout .k-scheduler-weekview .k-scrollbar-v > tr {
+            height:100%;
+        }
 
 
         /*.k-icon, .k-tool-icon, .k-grouping-dropclue, .k-drop-hint, .k-column-menu .k-sprite, .k-grid-mobile .k-resize-handle-inner:before, .k-grid-mobile .k-resize-handle-inner:after {
@@ -247,12 +253,12 @@
         </ul>
     </div>
 
-    <div data-role="view" id="tabstrip-ajanda" data-title="Randevular" data-layout="mobile-tabstrip">
-        <div id="scheduler"></div>
+    <div data-role="view" id="tabstrip-ajanda" data-title="Randevular" data-layout="mobile-tabstrip" style="height:100%;">
+        <div id="scheduler" style="height:100%"></div>
     </div>
 
     <script id="event-template" type="text/x-kendo-template">
-        <div class="randevu-template" style="width:100%; height:100%;"> <!--  onclick="EventTemplateFunc(this)" -->
+        <div class="randevu-template"  style="width:100%; height:100%;"> <!--  onclick="EventTemplateFunc(this)" -->
             <p id="SecilenId" hidden>#: taskId #</p>
             <h3>#: title #</h3>
         </div>

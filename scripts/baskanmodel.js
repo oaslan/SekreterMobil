@@ -793,7 +793,8 @@ $(function () {
             startTime: new Date("2013/6/13 8:00"),
             endTime: new Date("2013/6/13 22:00"),
             //selectable:true,
-            height: getBrowserWindowSize().height-80,
+            //height: getBrowserWindowSize().height-100,
+            height: $(window).height() - 100,
             majorTick: 60,                  // Soldaki saat aralığı.(1 saat)
             showWorkHours: false,           // İlk açılışta mesai saatlerini göstermesin tümünü göstersin.
             allDaySlot: false,              // Gridin üstüne allDay satırını kaldırır.
@@ -808,11 +809,11 @@ $(function () {
             //editable: true,
             editable: {
                 destroy: false,                                      //Event detaya tıklandığında silme işlemi disable edilir.
-                update: false,
-                create: false
+                update: true,
+                create: true
             },
             eventTemplate: $("#event-template").html(),             //Gridde gösterilecek randevu içeriği.
-            //mobile: "phone",
+            mobile: "phone",
             timezone: "Etc/UTC",                                    //Datepicker durumu.
             footer:false,
             /*footer: {                                               //Mesai saatlerini göster butonu inaktif yapar.
@@ -828,14 +829,15 @@ $(function () {
                 save: "Kaydet",
                 today: "Bugün",
                 editor: {
-                    allDayEvent: "All Day event",            //Editable:true iken açılan kısımda alldayevent check box text yazısı
-                    description: "Description",                   //Editable:true iken açılan kısımda description text yazısı
+                    //allDayEvent: "All Day event",            //Editable:true iken açılan kısımda alldayevent check box text yazısı
+                    allDayEvent: false,
+                    description: "Konusu",                   //Editable:true iken açılan kısımda description text yazısı
                     editorTitle: "Edit event",
-                    start: "Start",
-                    end: "End",
+                    start: "Başlama Saati",
+                    end: "Bitiş Saati",
                     endTimezone: "End date timezone",
                     repeat: "Repeat the event",
-                    title: "Title of the event"   //Yeni event eklerken title text yazısı.
+                    title: "Randevu Yeri"   //Yeni event eklerken title text yazısı.
                 },
                 views: {
                     day: "Gün",
@@ -920,6 +922,24 @@ $(function () {
         scope.Tarih = today;
     });
 
+    /*$(window).resize(function () {
+        //$("#scheduler").height(getBrowserWindowSize().height - 100);
+        //console.log($(window).height() + " -" + getBrowserWindowSize().height);
+        //$("#scheduler")[0].clientHeight;
+        console.log($("#scheduler").css("height", (getBrowserWindowSize().height - 100)));
+        //var valu = getBrowserWindowSize().height - 100;
+        var htm = $("#schedulerHeight")[0];
+        htm.style.cssText = "height: " + (getBrowserWindowSize().height - 100).toString() + "px;"
+        //console.log(htm);
+        //console.log($("#schedulerHeight")[0].attributes[2].nodeValue = '\"height: ' + (getBrowserWindowSize().height - 100).toString() + 'px;\"');
+        $("#scheduler").data("kendoScheduler").refresh();
+        //location.reload();
+    });
+    */
+
+    
+
+
     $(document).ready(function () {
 
         /*dataSource1.fetch(function () {
@@ -934,6 +954,14 @@ $(function () {
 
         var scheduler = $("#scheduler").data("kendoScheduler");
 
+        $(window).resize(function () {
+            var yukseklik = $(window).height() - 100;
+            scheduler.element.height(yukseklik);
+            $(".km-pane-wrapper").css({ "height": yukseklik });
+            console.log(scheduler.element.height());
+            console.log($(".km-pane-wrapper").css("height"));
+            $("#scheduler").data("kendoScheduler").refresh();
+        });
         /*$(window).resize(function () {
             var gridElement = $("#scheduler");
             var newGridHeight = getBrowserWindowSize().height - 100;
@@ -1415,16 +1443,9 @@ function onSelect(e) {
     }
     else if (item.attr("id") === "ajanda") {
         
-       // $("#tarihList").prependTo("#tabstrip-ajanda");
+       //$("#tarihList").prependTo("#tabstrip-ajanda");
         //fetchData(token);
         //ajandaRandevuFetchData(token);
-        $(window).resize(function () {
-            //$("#scheduler").height(getBrowserWindowSize().height - 100);
-            console.log($(window).height() + " -" + getBrowserWindowSize().height);
-            $("#scheduler")[0].clientHeight;
-            console.log($("#scheduler").css("height", (getBrowserWindowSize().height-80)));
-            $("#scheduler").data("kendoScheduler").refresh();
-        });
     }
     else if (item.attr("id") === "cikis") {
         $.ajax({
