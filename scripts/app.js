@@ -27,24 +27,6 @@
     };
   */
 
-    //var hostAdress = getIP();
-    
-
-    /*function getIP()
-    {
-        if (window.XMLHttpRequest) {
-            var httpObj = new XMLHttpRequest();                         //yeni tarayıcılarda xml dosyasını bu şekilde import edebiliriz
-        }
-        else {
-            var httpObj = new ActiveXObject("Microsoft.XMLHTTP");       //internet explorer'ın bazı eski sürümlerine destek verebilmek için bu şekilde
-        }
-
-        httpObj.open("GET", "ip.txt", false);                      //xml dosyamızın adı.
-        httpObj.send();
-
-        var veri = httpObj.responseText;
-        return veri.toString();
-    };*/
     var hostAdress = window.localStorage.getItem("ipAdres");
     //console.log(hostAdress);
 
@@ -67,11 +49,12 @@
         
         randevuDetayAciklama: "http://" + hostAdress + "/Rektorluk/api/Auth/RandevuDetayAciklamaEkle",
         randevuDetay: "http://" + hostAdress + "/Rektorluk/api/Auth/RandevuDetayBilgisiSorgula",
-        ajandaRandevuDetay: "http://" + hostAdress + "/Rektorluk/api/Auth/AjandaRandevuDetay"
+        ajandaRandevuDetay: "http://" + hostAdress + "/Rektorluk/api/Auth/AjandaRandevular",
+        ajandaRandevuEkle: "http://" + hostAdress + "/Rektorluk/api/Auth/AjandaRandevuEkle",
+        ajandaRandevuGuncelle: "http://" + hostAdress + "/Rektorluk/api/Auth/AjandaRandevuGuncelle"
     };
 
 })(window);
-
 
 function onLoad()
 { 

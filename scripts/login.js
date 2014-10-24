@@ -91,28 +91,29 @@
 
 function MevcutIPGoster()
 {
-    //var mevcutIP = GetXml();
-    var kontrol = window.localStorage.getItem("ipAdres");
-    //console.log("adres : " + kontrol);
-    if(kontrol === null)
-        window.localStorage.setItem("ipAdres", "localhost");
 
-    //var mevcutIP = getIP();
-    var mevcutIP = window.localStorage.getItem("ipAdres");
-    //console.log(mevcutIP);
-    document.getElementById("MevcutServisIP").textContent = mevcutIP.toString();
+        //alert("LocalStorage kullanılabilir");
+        //var mevcutIP = GetXml();
+        var kontrol = window.localStorage.getItem("ipAdres");
+
+        console.log("adres : " + kontrol);
+        if (kontrol === undefined || kontrol === null) {
+            window.localStorage.setItem("ipAdres", "localhost");
+            alert(window.localStorage.getItem("ipAdres"));
+        }
+
+        //var mevcutIP = getIP();
+        var mevcutIP = window.localStorage.getItem("ipAdres");
+        //console.log(mevcutIP);
+        document.getElementById("MevcutServisIP").textContent = mevcutIP;
+
 };
 
 function Kaydet(value) {
     var yeniIP = document.getElementById('yeniServisIP').value;
     //console.log(yeniIP);
-
-    //YeniIP değeri xml e yada dosyaya yazdırılmalı bu kısımda
-    //setIP(yeniIP);
     //ip değeri localStorage de saklanır.
     window.localStorage.setItem("ipAdres", yeniIP.toString());
-
-
     document.getElementById('yeniServisIP').value = "";
     window.location.href = "#tabstrip-login";
 };
@@ -120,49 +121,6 @@ function Kaydet(value) {
 function Iptal()
 {
     window.location.href = "#tabstrip-login";
-};
-
-
-/*function setIP() {
-    if (window.XMLHttpRequest) {
-        var httpObj = new XMLHttpRequest();                         //yeni tarayıcılarda xml dosyasını bu şekilde import edebiliriz
-    }
-    else {
-        var httpObj = new ActiveXObject("Microsoft.XMLHTTP");       //internet explorer'ın bazı eski sürümlerine destek verebilmek için bu şekilde
-    }
-    var s = httpObj.CreateTextFile("ip.txt", true);
-    s.WriteLine('Hello');
-    s.Close();
-}*/
-
-
-function setIP(yeniIP)
-{
-    "use strict";
-    var fs = require("fs");
-    fs.writeFile("ip.txt", yeniIP.toString(), function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("The file was saved!");
-        }
-    });
-};
-
-
-function getIP() {
-    if (window.XMLHttpRequest) {
-        var httpObj = new XMLHttpRequest();                         //yeni tarayıcılarda xml dosyasını bu şekilde import edebiliriz
-    }
-    else {
-        var httpObj = new ActiveXObject("Microsoft.XMLHTTP");       //internet explorer'ın bazı eski sürümlerine destek verebilmek için bu şekilde
-    }
-
-    httpObj.open("GET", "ip.txt", false);                      //xml dosyamızın adı.
-    httpObj.send();
-
-    var veri = httpObj.responseText;
-    return veri.toString();
 };
 
 

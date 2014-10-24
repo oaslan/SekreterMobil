@@ -13,6 +13,7 @@ angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', functi
     $scope.SecilenArayan = [];
     $scope.AjandaRandevular = [];
 
+
     $scope.Set_Color = function (payment) {
         if (payment == "1") {
             return { color: "black" }
@@ -35,7 +36,6 @@ angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', functi
     $scope.Yillar;
     $scope.sorguBaslangicYil;
     $scope.sorguBitisYil;
-
     $scope.GiderButceOranBilgisiSorguSonuc = [];
     $scope.GiderButceOranBilgisiForm = function(){
         if($scope.sorguBaslangicYil.length < 1 || $scope.sorguBitisYil.length < 1)
@@ -729,6 +729,7 @@ var RaporChart8 = function(data)
 };
 
 $(function () {
+
     $.ajaxSetup({
         beforeSend: function () { app.application.showLoading(); },
         complete: function () { app.application.hideLoading(); },
@@ -758,20 +759,14 @@ $(function () {
             }
         }
     });
+
     //console.log($("#tabstrip-randevulaaccessTokenible"));
     token = window.localStorage.getItem("accessToken");
     if (token === undefined || token === null || token === "")
         window.location = "index.html";
     scope = angular.element(document.getElementById("belediyeCTRL")).scope();
 
-
-    // 16,09,2014 DateTimePicker -----------------------------------------------
-
     var now = new Date();
-    /*var day = ("0" + now.getDate()).slice(-2);
-    var month = ("0" + (now.getMonth() + 1)).slice(-2);
-    var today = now.getFullYear() + "-" + (month) + "-" + (day);
-    */
     var today = new Date();
     today = new Date(today);
     var nextDay = new Date();
@@ -780,7 +775,6 @@ $(function () {
         kendo.culture('tr-TR');
     });
 
-   
     AjandaRandevuFetchData(token, today);
     //----------------------------------------------------------------
     $(document).ready(function () {
@@ -807,10 +801,16 @@ $(function () {
                 { type: "agenda", selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
             ],
             //editable: true,
-            editable: {
+            /*editable: {
                 destroy: false,                                      //Event detaya tıklandığında silme işlemi disable edilir.
                 update: true,
                 create: true
+            },*/
+            editable: {
+                update: true,
+                destroy: false,
+                create:true,
+                template: kendo.template($("#scheduler-template").html())
             },
             eventTemplate: $("#event-template").html(),             //Gridde gösterilecek randevu içeriği.
             mobile: "phone",
@@ -832,7 +832,7 @@ $(function () {
                     //allDayEvent: "All Day event",            //Editable:true iken açılan kısımda alldayevent check box text yazısı
                     allDayEvent: false,
                     description: "Konusu",                   //Editable:true iken açılan kısımda description text yazısı
-                    editorTitle: "Edit event",
+                    editorTitle: "Randevu Düzenle",
                     start: "Başlama Saati",
                     end: "Bitiş Saati",
                     endTimezone: "End date timezone",
@@ -849,7 +849,6 @@ $(function () {
             /*resources: [
             {
                 color : "red"
-                
                 field: "ownerId",
                 title: "Owner",
                 dataSource: [
@@ -860,9 +859,7 @@ $(function () {
             }
         ]*/
         });
-
         //console.log($(".k-state-default.k-nav-current")[0].childNodes[0].childNodes[1].firstChild.data);
-
         // Scheduler in tarihi her değiştiğinde tabstript-aramalar ve tabstript-randevular kısmında bulunan kendodatepicker içeriği de schedulerden seçilen tarihe göre güncellenir.
         $(document).on("click", ".k-link", function () {        /* class adı : ".k-link" , "#scheduler"  .k-scheduler-toolbar*/
 
@@ -880,7 +877,6 @@ $(function () {
                 scope.Tarih = (trh.getDate().toString().length > 1 ? trh.getDate() : ("0" + trh.getDate())) + "." + ((trh.getMonth() + 1).toString().length > 1 ? (trh.getMonth() + 1) : ("0" + (trh.getMonth() + 1))) + "." + trh.getFullYear();
             });
         });
-
         function AjandaTarihDuzenle(tar) {
             var temp;
             var tarih;
@@ -913,35 +909,13 @@ $(function () {
             }
             return tarih;
         };
-        
     });
 
-
-    //-------------------------------------------------------------
     scope.$apply(function () {
         scope.Tarih = today;
     });
 
-    /*$(window).resize(function () {
-        //$("#scheduler").height(getBrowserWindowSize().height - 100);
-        //console.log($(window).height() + " -" + getBrowserWindowSize().height);
-        //$("#scheduler")[0].clientHeight;
-        console.log($("#scheduler").css("height", (getBrowserWindowSize().height - 100)));
-        //var valu = getBrowserWindowSize().height - 100;
-        var htm = $("#schedulerHeight")[0];
-        htm.style.cssText = "height: " + (getBrowserWindowSize().height - 100).toString() + "px;"
-        //console.log(htm);
-        //console.log($("#schedulerHeight")[0].attributes[2].nodeValue = '\"height: ' + (getBrowserWindowSize().height - 100).toString() + 'px;\"');
-        $("#scheduler").data("kendoScheduler").refresh();
-        //location.reload();
-    });
-    */
-
-    
-
-
     $(document).ready(function () {
-
         /*dataSource1.fetch(function () {
             
             for (var i = 0; i < this.data().length ; i++) {
@@ -950,34 +924,17 @@ $(function () {
                 //console.log(this.data()[i].uid);
             }
         });*/
-        
-
         var scheduler = $("#scheduler").data("kendoScheduler");
 
+        //Uygulama kullanılırken ekran boyutu değiştirildiğinde (telefon yan yatırıldığında vs) schedulerin mevcut ekrana uyum sağlaması için gereken setlemeler
         $(window).resize(function () {
             var yukseklik = $(window).height() - 100;
             scheduler.element.height(yukseklik);
             $(".km-pane-wrapper").css({ "height": yukseklik });
-            console.log(scheduler.element.height());
-            console.log($(".km-pane-wrapper").css("height"));
+            //console.log(scheduler.element.height());
+            //console.log($(".km-pane-wrapper").css("height"));
             $("#scheduler").data("kendoScheduler").refresh();
         });
-        /*$(window).resize(function () {
-            var gridElement = $("#scheduler");
-            var newGridHeight = getBrowserWindowSize().height - 100;
-
-            gridElement.height(newGridHeight);
-            $("#scheduler").data("kendoScheduler").refresh();
-        });*/
-
-        /*$(window).resize(function () {
-
-
-            console.log($(window).height() + " -" + getBrowserWindowSize().height);
-            //scheduler.element.height(getBrowserWindowSize().height - 100);
-            scheduler.height = getBrowserWindowSize().height - 100;
-        });*/
-
 
         $("#Tarih").kendoDatePicker({
             value: (today.getDate() + "." + (today.getMonth() + 1) + "." + today.getFullYear()),
@@ -1016,10 +973,7 @@ $(function () {
 
         //Tarih.value(today);
         //today.setDate(today.getDate() + 1);
-        
     });
-
-   
     //Sorgu Başlangıç-Bitiş yılları -5
     var yillar = Array();
     scope.$apply(function () {
@@ -1038,7 +992,6 @@ $(function () {
     });
     //console.log("VALUE : " + $("k-state-default k-nav-current").innerHTML);
     //console.log(document);
-
 });
 
 function getBrowserWindowSize() {
@@ -1155,8 +1108,6 @@ function AjandaRandevuFetchData(accessToken, bugun){
                                         //);
                                     }
                                 });
-                                
-                                
                                 options.success(result.Randevular);
                             }
                         }
@@ -1169,20 +1120,176 @@ function AjandaRandevuFetchData(accessToken, bugun){
                         alert("Veriler alınırken bir hata meydana geldi.");
                     }
                 });
-            }
+            },
+            update: function (options) {
+                console.log(options.data.models[0].Id);
+                //console.log(options.data.models[0].BitisTarihi);
+                var basTarihi = tarihDuzenleFormataGore(options.data.models[0].BaslamaTarihi);
+                var bitTarihi = tarihDuzenleFormataGore(options.data.models[0].BitisTarihi);
+                //console.log(basTarihi);
+                //console.log(bitTarihi);
+
+                var basSaati = (((options.data.models[0].BaslamaTarihi.toString()).split(" "))[4].toString()).split(":");
+                var bitSaati = (((options.data.models[0].BitisTarihi.toString()).split(" "))[4].toString()).split(":");
+                basSaati = basSaati[0] + ":" + basSaati[1];
+                bitSaati = bitSaati[0] + ":" + bitSaati[1];
+                //console.log(basSaati);
+                //console.log(bitSaati);
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        'accessToken': accessToken
+                        , Tarih: tarihDuzenleFormataGore(bugun)
+                        , Id: options.data.models[0].Id.toString()
+                        , BaslamaTarihiStr: basTarihi.toString()
+                        , BitisTarihiStr: bitTarihi.toString()
+                        , BaslamaSaati: basSaati.toString()
+                        , BitisSaati: bitSaati.toString()
+                        , Konu: options.data.models[0].Konu
+                        , Katilimcilar: options.data.models[0].Katilimcilar
+                        , YerId: "1"
+                        , TuruId: "2"
+                        , Hatirlatma: options.data.models[0].Hatirlatma
+                        , Aciklama: options.data.models[0].Aciklama
+                        , TalepEden: options.data.models[0].TalepEden
+                        , Telefon: options.data.models[0].Telefon
+                        , Email: options.data.models[0].Email
+                        , Yeri: options.data.models[0].Yeri
+                        , Adres: options.data.models[0].Adres
+                        , KonuRenk: "1"
+                        , HatirlatmaRenk: "2"
+                        , KatilimciRenk: "3"
+                        , Silindi: "0"
+                    },
+                    url: app.endpoints.ajandaRandevuGuncelle,
+                    dataType: "json",
+                    beforeSend: function () { app.application.showLoading(); },
+                    complete: function () { app.application.hideLoading(); },
+                    crossDomain: true,
+                    success: function (result) {
+                        //console.log(result);
+                        if (result != null) {
+                            if (scope.AjandaRandevular.length != null) {
+                                scope.$apply(function () {
+                                    scope.AjandaRandevular = result.Randevular;
+                                    for (var i = 0; i < scope.AjandaRandevular.length; i++) {
+                                        scope.AjandaRandevular[i].BaslamaTarihi = new Date((new Date(scope.AjandaRandevular[i].BaslamaTarihi)).setHours(getSaat(scope.AjandaRandevular[i].BaslamaSaati), getDakika(scope.AjandaRandevular[i].BaslamaSaati)));
+                                        //DB de her ihtimale karşı bitiş saati girilmediyse başlangıç saatinden 1 saat sonraya bitiş tarihi atanır.
+                                        scope.AjandaRandevular[i].BitisTarihi = new Date((new Date(scope.AjandaRandevular[i].BitisTarihi)).setHours(getSaat(scope.AjandaRandevular[i].BitisSaati) == "" ? parseInt(getSaat(scope.AjandaRandevular[i].BaslamaSaati)) + 1 : getSaat(scope.AjandaRandevular[i].BitisSaati), getDakika(scope.AjandaRandevular[i].BitisSaati) == "" ? getDakika(scope.AjandaRandevular[i].BaslamaSaati) : getDakika(scope.AjandaRandevular[i].BitisSaati)));
+                                    }
+                                });
+                                options.success(result.Randevular);
+                                location.reload();
+                            }
+                        }
+                        else {
+                            window.localStorage.removeItem("accessToken");
+                            window.location = "index.html";
+                        }
+                    },
+                    error: function () {
+                        alert("Yeni kayıt oluşumu sırasında bir hata meydana geldi.");
+                    }
+                });
+            },
+            create: function (options) {
+                //console.log(options.data.models[0].BaslamaTarihi);
+                //console.log(options.data.models[0].BitisTarihi);
+                var basTarihi = tarihDuzenleFormataGore(options.data.models[0].BaslamaTarihi);
+                var bitTarihi = tarihDuzenleFormataGore(options.data.models[0].BitisTarihi);
+                //console.log(basTarihi);
+                //console.log(bitTarihi);
+
+                var basSaati = (((options.data.models[0].BaslamaTarihi.toString()).split(" "))[4].toString()).split(":");
+                var bitSaati = (((options.data.models[0].BitisTarihi.toString()).split(" "))[4].toString()).split(":");
+                basSaati = basSaati[0] + ":" + basSaati[1];
+                bitSaati = bitSaati[0] + ":" + bitSaati[1];
+                //console.log(basSaati);
+                //console.log(bitSaati);
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        'accessToken': accessToken
+                        , Tarih: tarihDuzenleFormataGore(bugun)
+                        , BaslamaTarihiStr: basTarihi.toString()
+                        , BitisTarihiStr: bitTarihi.toString()
+                        , BaslamaSaati: basSaati.toString()
+                        , BitisSaati: bitSaati.toString()
+                        , Konu: options.data.models[0].Konu
+                        , Katilimcilar: options.data.models[0].Katilimcilar
+                        , YerId: "1"
+                        , TuruId: "2"
+                        , Hatirlatma: options.data.models[0].Hatirlatma
+                        , Aciklama: options.data.models[0].Aciklama
+                        , TalepEden: options.data.models[0].TalepEden
+                        , Telefon: options.data.models[0].Telefon
+                        , Email: options.data.models[0].Email
+                        , Yeri: options.data.models[0].Yeri
+                        , Adres: options.data.models[0].Adres
+                        , KonuRenk: "1"
+                        , HatirlatmaRenk: "2"
+                        , KatilimciRenk: "3"
+                        , Silindi: "0"
+                    },
+                    url: app.endpoints.ajandaRandevuEkle,
+                    dataType: "json",
+                    beforeSend: function () { app.application.showLoading(); },
+                    complete: function () { app.application.hideLoading(); },
+                    crossDomain: true,
+                    success: function (result) {
+                        //console.log(result);
+                        if (result != null) {
+                            if (scope.AjandaRandevular.length != null) {
+                                scope.$apply(function () {
+                                    scope.AjandaRandevular = result.Randevular;
+                                    for (var i = 0; i < scope.AjandaRandevular.length; i++) {
+                                        scope.AjandaRandevular[i].BaslamaTarihi = new Date((new Date(scope.AjandaRandevular[i].BaslamaTarihi)).setHours(getSaat(scope.AjandaRandevular[i].BaslamaSaati), getDakika(scope.AjandaRandevular[i].BaslamaSaati)));
+                                        //DB de her ihtimale karşı bitiş saati girilmediyse başlangıç saatinden 1 saat sonraya bitiş tarihi atanır.
+                                        scope.AjandaRandevular[i].BitisTarihi = new Date((new Date(scope.AjandaRandevular[i].BitisTarihi)).setHours(getSaat(scope.AjandaRandevular[i].BitisSaati) == "" ? parseInt(getSaat(scope.AjandaRandevular[i].BaslamaSaati)) + 1 : getSaat(scope.AjandaRandevular[i].BitisSaati), getDakika(scope.AjandaRandevular[i].BitisSaati) == "" ? getDakika(scope.AjandaRandevular[i].BaslamaSaati) : getDakika(scope.AjandaRandevular[i].BitisSaati)));
+                                    }
+                                });
+                                options.success(result.Randevular);
+                                location.reload();
+                            }
+                        }
+                        else {
+                            window.localStorage.removeItem("accessToken");
+                            window.location = "index.html";
+                        }
+                    },
+                    error: function () {
+                        alert("Yeni kayıt oluşumu sırasında bir hata meydana geldi.");
+                    }
+                });
+            },
         },
         schema: {
             model: {
                 id: "taskId",
                 fields: {
                     taskId: { from: "Id", type: "number" },
-                    title: { from: "Yeri", defaultValue: "No title", validation: { required: true } },
                     start: { from: "BaslamaTarihi", type: "date" },
                     end: { from: "BitisTarihi", type: "date" },
-                    //startTimezone: { from: "BaslamaSaati" },
-                    //endTimezone: { from: "BitisSaati" },
+                    baslamaSaati: { from: "BaslamaSaati" },
+                    bitisSaati: { from: "BitisSaati" },
                     description: { from: "Konu" },
-                    konuRenk: { from: "KonuRenk" }
+                    katilimcilar: { from: "Katilimcilar" },
+                    yerId: { from: "YerId" },
+                    turuid: { from: "TuruId" },
+                    hatirlatma: { from: "Hatirlatma" },
+                    aciklama: { from: "Aciklama" },
+                    talepEden: { from: "TalepEden" },
+                    telefon: { from: "Telefon" },
+                    email: { from: "Email" },
+                    title: { from: "Yeri", defaultValue: "", validation: { required: true } },
+                    adres: { from: "Adres" },
+                    konuRenk: { from: "KonuRenk" },
+                    hatirlatmaRenk: { from: "HatirlatmaRenk" },
+                    katilimciRenk: { from: "KatilimciRenk" },
+                    silindi: { from: "Silindi" },
+                    yoneticiId: { from: "YoneticiId" }                    
+                    //startTimezone: { from: "Baslama,Saati" },
+                    //endTimezone: { from: "BitisSaati" },
                     //recurrenceId: { from: "RecurrenceID" },
                     //recurrenceRule: { from: "RecurrenceRule" },
                     //recurrenceException: { from: "RecurrenceException" },
@@ -1191,7 +1298,6 @@ function AjandaRandevuFetchData(accessToken, bugun){
                 }
             }
         }
-
     });
     /* 
     // dataSource1 üzerinden 0 konumundaki verinin title sını çeker.

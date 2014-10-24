@@ -14,8 +14,10 @@
     <script type="text/javascript" charset="utf-8" src="kendo/js/kendo.mobile.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="scripts/app.js"></script>
     <script type="text/javascript" charset="utf-8" src="scripts/login.js"></script>
+
 </head>
 <body onload="onLoad()">
+    
     <!--Login-->
     <div id="tabstrip-login"
         data-role="view"
@@ -52,10 +54,7 @@
         </div>
     </div>
     
-    <div id="ayarlar"
-         data-role="view"
-         data-title="Ayarlar">
-
+    <div id="ayarlar" data-role="view" data-title="Ayarlar">
         <div class="view-content">
             <form data-bind="events: { keyup: checkEnter }">
                 <ul data-role="listview" data-style="inset">
