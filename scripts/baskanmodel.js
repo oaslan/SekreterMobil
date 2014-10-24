@@ -928,7 +928,10 @@ $(function () {
 
         //Uygulama kullanılırken ekran boyutu değiştirildiğinde (telefon yan yatırıldığında vs) schedulerin mevcut ekrana uyum sağlaması için gereken setlemeler
         $(window).resize(function () {
-            var yukseklik = $(window).height() - 100;
+            var genislik = $(window).width();
+            var yukseklik = $(window).height();
+            if (yukseklik > genislik)
+                yukseklik = yukseklik - 100;
             scheduler.element.height(yukseklik);
             $(".km-pane-wrapper").css({ "height": yukseklik });
             //console.log(scheduler.element.height());
