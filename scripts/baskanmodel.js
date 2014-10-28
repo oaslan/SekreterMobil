@@ -13,7 +13,6 @@ angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', functi
     $scope.SecilenArayan = [];
     $scope.AjandaRandevular = [];
 
-
     $scope.Set_Color = function (payment) {
         if (payment == "1") {
             return { color: "black" }
@@ -796,9 +795,9 @@ $(function () {
            // mobile: true,                   //Render edilirken mobile göre düzenlenir.
             views: [
                 { type: "day"},
-                { type: "week", selected:true, selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
+                { type: "week", selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
                 //"month",
-                { type: "agenda", selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
+                { type: "agenda", selected: true, selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
             ],
             //editable: true,
             /*editable: {
@@ -859,23 +858,44 @@ $(function () {
             }
         ]*/
         });
+
+        var scheduler3 = $("#scheduler").data("kendoScheduler");
+        var AjandaTarih1 = scheduler3.date();
+
+        //$("#SchedulerDatePicker")[0].childNodes[0].childNodes[0].value = (AjandaTarih1.getDate().toString().length > 1 ? AjandaTarih1.getDate() : ("0" + AjandaTarih1.getDate())) + "." + ((AjandaTarih1.getMonth() + 1).toString().length > 1 ? (AjandaTarih1.getMonth() + 1) : ("0" + (AjandaTarih1.getMonth() + 1))) + "." + AjandaTarih1.getFullYear();
+        $("#SchedulerDatePicker").kendoDatePicker({
+            value: (today.getDate() + "." + (today.getMonth() + 1) + "." + today.getFullYear()),
+            change: function () {
+                //console.log("This.Value : " + this.value());
+                scheduler3.date(this.value());
+                $('#Tarih').data('kendoDatePicker').value(tarihDuzenleFormataGore(this.value()));
+            }
+            //format: "dd/MM/yyyy",
+        });
+        //$('#SchedulerDatePicker').attr('disabled', 'disabled');
+
         //console.log($(".k-state-default.k-nav-current")[0].childNodes[0].childNodes[1].firstChild.data);
         // Scheduler in tarihi her değiştiğinde tabstript-aramalar ve tabstript-randevular kısmında bulunan kendodatepicker içeriği de schedulerden seçilen tarihe göre güncellenir.
         $(document).on("click", ".k-link", function () {        /* class adı : ".k-link" , "#scheduler"  .k-scheduler-toolbar*/
 
             var scheduler2 = $("#scheduler").data("kendoScheduler");
-
             var AjandaTarih = scheduler2.date();
+
             //console.log("AjandaTarih : " + scheduler2.date());
 
             //var t = $(".k-state-default.k-nav-current")[0].childNodes[0].childNodes[1].firstChild.data;
             //var trh = new Date(AjandaTarihDuzenle(t));
             var trh = AjandaTarih;
             //console.log("AA : " + (trh.getDate().toString().length > 1 ? trh.getDate() : ("0" + trh.getDate())) + "." + ((trh.getMonth() + 1).toString().length > 1 ? (trh.getMonth() + 1) : ("0" + (trh.getMonth() + 1))) + "." + trh.getFullYear());
-
+            //$("#SchedulerDatePicker")[0].childNodes[0].childNodes[0].value = (trh.getDate().toString().length > 1 ? trh.getDate() : ("0" + trh.getDate())) + "." + ((trh.getMonth() + 1).toString().length > 1 ? (trh.getMonth() + 1) : ("0" + (trh.getMonth() + 1))) + "." + trh.getFullYear()
+            var guncelTarih = (trh.getDate().toString().length > 1 ? trh.getDate() : ("0" + trh.getDate())) + "." + ((trh.getMonth() + 1).toString().length > 1 ? (trh.getMonth() + 1) : ("0" + (trh.getMonth() + 1))) + "." + trh.getFullYear();
+            //console.log($("#SchedulerDatePicker")[0].childNodes[0].childNodes[0].value);
             scope.$apply(function () {
-                scope.Tarih = (trh.getDate().toString().length > 1 ? trh.getDate() : ("0" + trh.getDate())) + "." + ((trh.getMonth() + 1).toString().length > 1 ? (trh.getMonth() + 1) : ("0" + (trh.getMonth() + 1))) + "." + trh.getFullYear();
+                scope.Tarih = guncelTarih.toString();
+                //console.log((trh.getDate().toString().length > 1 ? trh.getDate() : ("0" + trh.getDate())) + "." + ((trh.getMonth() + 1).toString().length > 1 ? (trh.getMonth() + 1) : ("0" + (trh.getMonth() + 1))) + "." + trh.getFullYear());
             });
+
+            $('#SchedulerDatePicker').data('kendoDatePicker').value(guncelTarih.toString());
         });
         function AjandaTarihDuzenle(tar) {
             var temp;
@@ -944,6 +964,7 @@ $(function () {
             change: function () {
                 //console.log("This.Value : " + this.value());
                 scheduler.date(this.value());
+                $('#SchedulerDatePicker').data('kendoDatePicker').value((this.value()).toString());
             }
             //format: "dd/MM/yyyy",
         });
@@ -1063,6 +1084,7 @@ function AjandaTarihDegistir(tar) {
     var tarih = new Date(dizi[2], (dizi[1] - 1), dizi[0]);
     //console.log("TAR : " + tarih);
     scheduler.date(tarih);
+    $('#SchedulerDatePicker').data('kendoDatePicker').value(tar.toString());
 };
 
 function AjandaRandevuFetchData(accessToken, bugun){
@@ -1551,7 +1573,7 @@ function onSelect(e) {
         fetchData(token);
     }
     else if (item.attr("id") === "ajanda") {
-        
+        $("#scheduler").data("kendoScheduler").refresh();
        //$("#tarihList").prependTo("#tabstrip-ajanda");
         //fetchData(token);
         //ajandaRandevuFetchData(token);
