@@ -1403,8 +1403,9 @@ function RandevuAciklamaEkle() {
                 if (result != null) {
                     scope.$apply(function () {
                         scope.SecilenRandevu = result.SecilenRandevu;
+                        //location.reload();
                         window.location.href = "#RandevuDetay";
-                        location.reload();
+                        
                     });
                 }
                 else {
@@ -1445,8 +1446,9 @@ function ArayanSonucEkle()
                 if (result != null) {
                     scope.$apply(function () {
                         scope.SecilenArayan = result.SecilenArayan;
+                        //location.reload();
                         window.location.href = "#ArayanDetay";
-                        location.reload();
+                        
                     });
                 }
                 else {
