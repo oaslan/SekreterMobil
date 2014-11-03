@@ -791,11 +791,11 @@ $(function () {
             majorTick: 60,                  // Soldaki saat aralığı.(1 saat)
             showWorkHours: false,           // İlk açılışta mesai saatlerini göstermesin tümünü göstersin.
             allDaySlot: false,              // Gridin üstüne allDay satırını kaldırır.
-            minorTickCount: 2,             // İki saat arasının kaç aralığa bölünmesi gerektiğini setler.
+            minorTickCount: 4,             // İki saat arasının kaç aralığa bölünmesi gerektiğini setler.
            // mobile: true,                   //Render edilirken mobile göre düzenlenir.
             views: [
                 { type: "day"},
-                { type: "week", selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
+                { type: "week",selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
                 //"month",
                 { type: "agenda", selected: true, selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
             ],
@@ -1135,6 +1135,7 @@ function AjandaRandevuFetchData(accessToken, bugun){
                                         //);
                                     }
                                 });
+                                console.log(result.Randevular);
                                 options.success(result.Randevular);
                             }
                         }
@@ -1403,6 +1404,7 @@ function RandevuAciklamaEkle() {
                     scope.$apply(function () {
                         scope.SecilenRandevu = result.SecilenRandevu;
                         window.location.href = "#RandevuDetay";
+                        location.reload();
                     });
                 }
                 else {
@@ -1444,6 +1446,7 @@ function ArayanSonucEkle()
                     scope.$apply(function () {
                         scope.SecilenArayan = result.SecilenArayan;
                         window.location.href = "#ArayanDetay";
+                        location.reload();
                     });
                 }
                 else {

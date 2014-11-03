@@ -201,6 +201,10 @@
             background-color: #e9e9e9;
         }
 
+        /* Scheduler Dün, Yarın butonlarının genişlik ayarı */
+        /*.SchLeftArrowSet, .SchRightArrowSet {
+            width:43px;
+        }*/
 
     </style>
 
@@ -371,7 +375,7 @@
                     <div class="news pull-left news_icon" style="width:120px; height:100%;">
                         <label for="title" style="width:100%; text-align:left;">Randevu Yeri</label>
                     </div>
-                    <div data-container-for ="title" class="media-body" style="margin:0 0 0 0; width:60%; height:100%; float:right;">
+                    <div data-container-for ="title" class="media-body" style="margin:0 0 0 0; width:60%; height:100%; float:right; ">
                         <input type="text" class="k-input k-textbox" name="title" required="required" data-bind="value:title" style="width:100%;">
                     </div>
                 </li>
@@ -432,7 +436,7 @@
                         <label for="aciklama" style="width:100%; text-align:left;">Açıklama</label>
                     </div>
                     <div data-container-for="aciklama" class="media-body" style="margin:0 0 0 0; width:60%; height:100%; float:right;">
-                        <input type="text" class="k-input k-textbox" name="aciklama" required="" data-bind="value:aciklama" style="width:100%;">
+                        <input type="text" class="k-input k-textbox" name="aciklama" data-bind="value:aciklama" style="width:100%;">
                     </div>
                 </li>
             </ul>
