@@ -777,87 +777,8 @@ $(function () {
     AjandaRandevuFetchData(token, today);
     //----------------------------------------------------------------
     $(document).ready(function () {
-        kendo.culture('tr-TR');
 
-        //console.log(getBrowserWindowSize().height);
-
-        $("#scheduler").kendoScheduler({
-            date: new Date(today),/*new Date("2014/01/16"),*/
-            startTime: new Date("2013/6/13 8:00"),
-            endTime: new Date("2013/6/13 22:00"),
-            //selectable:true,
-            //height: getBrowserWindowSize().height-100,
-            height: $(window).height() - 100,
-            majorTick: 60,                  // Soldaki saat aralığı.(1 saat)
-            showWorkHours: false,           // İlk açılışta mesai saatlerini göstermesin tümünü göstersin.
-            allDaySlot: false,              // Gridin üstüne allDay satırını kaldırır.
-            minorTickCount: 4,             // İki saat arasının kaç aralığa bölünmesi gerektiğini setler.
-           // mobile: true,                   //Render edilirken mobile göre düzenlenir.
-            views: [
-                { type: "day"},
-                { type: "week",selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
-                //"month",
-                { type: "agenda", selected: true, selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
-            ],
-            //editable: true,
-            /*editable: {
-                destroy: false,                                      //Event detaya tıklandığında silme işlemi disable edilir.
-                update: true,
-                create: true
-            },*/
-            editable: {
-                update: true,
-                destroy: false,
-                create:true,
-                template: kendo.template($("#scheduler-template").html())
-            },
-            eventTemplate: $("#event-template").html(),             //Gridde gösterilecek randevu içeriği.
-            mobile: "phone",
-            timezone: "Etc/UTC",                                    //Datepicker durumu.
-            footer:false,
-            /*footer: {                                               //Mesai saatlerini göster butonu inaktif yapar.
-                command: true
-            },*/
-            messages: {                                             //Mesai saatleri göster butonu yazısını günceller.
-                showWorkDay: "Mesai Saatlerini Göster",
-                showFullDay: "Tüm Günü Göster",
-                allDay: "Gün",
-                cancel: "Vazgeç",
-                deleteWindowTitle: "Randevu Sil",
-                destroy: "Sil",
-                save: "Kaydet",
-                today: "Bugün",
-                editor: {
-                    //allDayEvent: "All Day event",            //Editable:true iken açılan kısımda alldayevent check box text yazısı
-                    allDayEvent: false,
-                    description: "Konusu",                   //Editable:true iken açılan kısımda description text yazısı
-                    editorTitle: "Randevu Düzenle",
-                    start: "Başlama Saati",
-                    end: "Bitiş Saati",
-                    endTimezone: "End date timezone",
-                    repeat: "Repeat the event",
-                    title: "Randevu Yeri"   //Yeni event eklerken title text yazısı.
-                },
-                views: {
-                    day: "Gün",
-                    week: "Hafta",
-                    agenda: "Ajanda"
-                }
-            },
-            dataSource: dataSource1
-            /*resources: [
-            {
-                color : "red"
-                field: "ownerId",
-                title: "Owner",
-                dataSource: [
-                    { text: "Alex", value: 1, color: "#f8a398" },
-                    { text: "Bob", value: 2, color: "#51a0ed" },
-                    { text: "Charlie", value: 3, color: "#56ca85" }
-                ]
-            }
-        ]*/
-        });
+        KendoScheduler(today);
 
         var scheduler3 = $("#scheduler").data("kendoScheduler");
         var AjandaTarih1 = scheduler3.date();
@@ -1020,6 +941,90 @@ $(function () {
 
 });
 
+function KendoScheduler(today) {
+    kendo.culture('tr-TR');
+
+    //console.log(getBrowserWindowSize().height);
+
+    $("#scheduler").kendoScheduler({
+        date: new Date(today),/*new Date("2014/01/16"),*/
+        startTime: new Date("2013/6/13 8:00"),
+        endTime: new Date("2013/6/13 22:00"),
+        //selectable:true,
+        //height: getBrowserWindowSize().height-100,
+        height: $(window).height() - 100,
+        majorTick: 60,                  // Soldaki saat aralığı.(1 saat)
+        showWorkHours: false,           // İlk açılışta mesai saatlerini göstermesin tümünü göstersin.
+        allDaySlot: false,              // Gridin üstüne allDay satırını kaldırır.
+        minorTickCount: 4,             // İki saat arasının kaç aralığa bölünmesi gerektiğini setler.
+        // mobile: true,                   //Render edilirken mobile göre düzenlenir.
+        views: [
+            { type: "day" },
+            { type: "week", selected: true, selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
+            //"month",
+            { type: "agenda",selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
+        ],
+        //editable: true,
+        /*editable: {
+            destroy: false,                                      //Event detaya tıklandığında silme işlemi disable edilir.
+            update: true,
+            create: true
+        },*/
+        editable: {
+            update: true,
+            destroy: false,
+            create: true,
+            template: kendo.template($("#scheduler-template").html())
+        },
+        eventTemplate: $("#event-template").html(),             //Gridde gösterilecek randevu içeriği.
+        mobile: "phone",
+        timezone: "Etc/UTC",                                    //Datepicker durumu.
+        footer: false,
+        /*footer: {                                               //Mesai saatlerini göster butonu inaktif yapar.
+            command: true
+        },*/
+        messages: {                                             //Mesai saatleri göster butonu yazısını günceller.
+            showWorkDay: "Mesai Saatlerini Göster",
+            showFullDay: "Tüm Günü Göster",
+            allDay: "Gün",
+            cancel: "Vazgeç",
+            deleteWindowTitle: "Randevu Sil",
+            destroy: "Sil",
+            save: "Kaydet",
+            today: "Bugün",
+            editor: {
+                //allDayEvent: "All Day event",            //Editable:true iken açılan kısımda alldayevent check box text yazısı
+                allDayEvent: false,
+                description: "Konusu",                   //Editable:true iken açılan kısımda description text yazısı
+                editorTitle: "Randevu Düzenle",
+                start: "Başlama Saati",
+                end: "Bitiş Saati",
+                endTimezone: "End date timezone",
+                repeat: "Repeat the event",
+                title: "Randevu Yeri"   //Yeni event eklerken title text yazısı.
+            },
+            views: {
+                day: "Gün",
+                week: "Hafta",
+                agenda: "Ajanda"
+            }
+        },
+        dataSource: dataSource1
+        /*resources: [
+        {
+            color : "red"
+            field: "ownerId",
+            title: "Owner",
+            dataSource: [
+                { text: "Alex", value: 1, color: "#f8a398" },
+                { text: "Bob", value: 2, color: "#51a0ed" },
+                { text: "Charlie", value: 3, color: "#56ca85" }
+            ]
+        }
+    ]*/
+    });
+}
+
 function getBrowserWindowSize() {
     var myWidth = 0, myHeight = 0;
     if (typeof (window.innerWidth) == 'number') {
@@ -1135,7 +1140,7 @@ function AjandaRandevuFetchData(accessToken, bugun){
                                         //);
                                     }
                                 });
-                                console.log(result.Randevular);
+                                //console.log(result.Randevular);
                                 options.success(result.Randevular);
                             }
                         }
@@ -1150,7 +1155,7 @@ function AjandaRandevuFetchData(accessToken, bugun){
                 });
             },
             update: function (options) {
-                console.log(options.data.models[0].Id);
+                //console.log(options.data.models[0].Id);
                 //console.log(options.data.models[0].BitisTarihi);
                 var basTarihi = tarihDuzenleFormataGore(options.data.models[0].BaslamaTarihi);
                 var bitTarihi = tarihDuzenleFormataGore(options.data.models[0].BitisTarihi);
@@ -1207,7 +1212,9 @@ function AjandaRandevuFetchData(accessToken, bugun){
                                     }
                                 });
                                 options.success(result.Randevular);
-                                location.reload();
+                                //location.reload();
+                                dataSource1.read();
+                                $("#scheduler").data("kendoScheduler").refresh();
                             }
                         }
                         else {
@@ -1277,7 +1284,9 @@ function AjandaRandevuFetchData(accessToken, bugun){
                                     }
                                 });
                                 options.success(result.Randevular);
-                                location.reload();
+                                //location.reload();
+                                dataSource1.read();
+                                $("#scheduler").data("kendoScheduler").refresh();
                             }
                         }
                         else {
@@ -1580,6 +1589,7 @@ function onSelect(e) {
         fetchData(token);
     }
     else if (item.attr("id") === "ajanda") {
+        dataSource1.read();
         $("#scheduler").data("kendoScheduler").refresh();
        //$("#tarihList").prependTo("#tabstrip-ajanda");
         //fetchData(token);
