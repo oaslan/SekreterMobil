@@ -264,6 +264,33 @@
             <li style="width:40%; height:36px; float:right; text-align:right; margin: 0 0 0 0;  background-color:#f4f4f4; border-width: 0 0 0 0;">
                 <input style="width:100%;text-align:center" type="date" id="Tarih" class="datePicker" ng-model="Tarih">
             </li>
+            <li style="float:left; background: #f4f4f4; border-width: 0 0 0 0; font-weight: bold;font-family: sans-serif;">
+                    <p style="color: #428bca; font-size: 0.9em; padding:0 0 0 0; margin:0 0 0 0;" class="glyphicon" data-role="buttongroup">
+                        <a id="Bugun" style="margin-top:1px;">Bugün</a>
+                        <a id="Dun" class="glyphicon glyphicon-arrow-left"></a>
+                        <a id="Yarin" class="glyphicon glyphicon-arrow-right"></a>
+                    </p>
+                    <script>
+                        $(document).ready(function () {
+                            $("#Bugun").kendoButton({
+                            });
+                            $("#Dun").kendoButton({
+                            });
+                            $("#Yarin").kendoButton({
+                            });
+                        });
+                    </script>
+            </li>
+            <!--
+            <li data-role="buttongroup" style="color: #428bca; font-size: 0.9em;">
+                <a id="Bugun" data-role="button" data-icon="">Bugün</a>
+                <a id="Dun" data-role="button" class="glyphicon glyphicon-arrow-left" style="font-size:15px;"></a>
+                <a id="Yarin" data-role="button" class="glyphicon glyphicon-arrow-right" style="font-size:15px;"></a>
+            </li>
+                -->
+            
+ 
+            <!--
             <li style="background-color:#f4f4f4; border-width: 0 0 0 0;">
                 <div class="btn-group">
                     <button id="Bugun" type="button" class="btn btn-default"><i class="glyphicon"><span style="color:#428bca;font-weight: bold; font: normal 0.9em 'HelveticaNeue Light','Roboto Light','Slate Light','Segoe WP',NokiaPureTextLight,sans-serif;">Bugün</span></i></button>
@@ -271,6 +298,7 @@
                     <button id="Yarin" type="button" class="btn btn-default"><i class="glyphicon glyphicon-arrow-right"></i></button>
                 </div>
             </li>
+                -->
         </ul>
 
         <ul data-role="listview" data-style="inset" style="margin:2px 4px 0 4px;">
@@ -329,7 +357,7 @@
     </div>
 
     <script id="event-template" type="text/x-kendo-template">
-        <div class="randevu-template" style="width:100%; height:100%;" onclick="EventTemplateFunc(this)">
+        <div class="randevu-template" style="width:100%; height:100%;">
             <!--  onclick="EventTemplateFunc(this)" -->
             <p id="SecilenId" hidden>#: taskId #</p>
             <h3>#: title #</h3>
@@ -462,6 +490,23 @@
     </script>
     
         <div data-role="view" id="RandevuDetay" data-title="Randevu Detay" data-layout="mobile-tabstrip">
+            <div>
+                <p style="color: #428bca; font-size: 0.9em;" class="glyphicon">
+                    <a id="geriRandevu" class="glyphicon glyphicon-backward">
+                        Geri
+                    </a>
+                </p>
+                <script>
+                    $(document).ready(function () {
+                        $("#geriRandevu").kendoButton({
+                        });
+                        $("#geriRandevu").on("click", function () {
+                            window.history.back();
+                        });
+                    });
+                </script>
+            </div>
+
             <p class="alert alert-info text-center" style="font-size:17px">
                 Not Ekle
             </p>
@@ -497,14 +542,31 @@
                                     <div style="float:right; width:70%; text-align:right"><span class="value" id="RandevuAciklamaData" ng-show="r.Aciklama.length > 0" text="{{r.Aciklama}}">{{r.Aciklama}}</span></div>
                                 </li>
                                 <li>
-                                    <div style="float:left; width:30%" class="Detay">Açıklama Ekle: </div>
+                                    <div style="float:left; width:30%; height:30px;" class="Detay">Açıklama Ekle: </div>
                                     <input type="text" name="enter" style="float:right; width:70%;" class="enter" id="AciklamaId" value="" />
                                 </li>
                                 <li>
+                                    <div>
+                                        <p style="color: #428bca; font-size: 1.3em; width:95%;" class="glyphicon">
+                                            <a id="iconTextButtonRandevu" class="glyphicon glyphicon-floppy-disk" style="width:100%;" onclick="RandevuAciklamaEkle();">
+                                                Kaydet
+                                            </a>
+                                        </p>
+                                        <script>
+                                            $(document).ready(function () {
+                                                $("#iconTextButtonRandevu").kendoButton({
+                                                });
+                                            });
+                                        </script>
+                                    </div>
+                                </li>
+
+                                <!--<li>
                                     <div class="buttonArea">
                                         <input type="button" value="Kaydet" class="btn btn-primary btn-block" onclick="RandevuAciklamaEkle();" />
                                     </div>
                                 </li>
+                                    -->
                             </ul>
                         </li>
                     </ul>
@@ -513,6 +575,22 @@
         </div>
 
         <div data-role="view" id="ArayanDetay" data-title="Arayan Detay" data-layout="mobile-tabstrip">
+            <div>
+                <p style="color: #428bca; font-size: 0.9em;" class="glyphicon">
+                    <a id="geriArayan" class="glyphicon glyphicon-backward">
+                        Geri
+                    </a>
+                </p>
+                <script>
+                    $(document).ready(function () {
+                        $("#geriArayan").kendoButton({
+                        });
+                        $("#geriArayan").on("click", function () {
+                            window.history.back();
+                        });
+                    });
+                </script>
+            </div>
             <p class="alert alert-info text-center" style="font-size:13px">
                 Not Ekle
             </p>
@@ -551,14 +629,32 @@
                                     <div style="float:right; width:70%; text-align:right"><span class="value" id="ArayanSonucData" ng-show="a.Sonuc.length > 0" text="{{a.Sonuc}}">{{a.Sonuc}}</span></div>
                                 </li>
                                 <li>
-                                    <div style="float:left; width:30%" class="Detay">Sonuç Ekle: </div>
+                                    <div style="float:left; width:30%; height:30px;" class="Detay">Sonuç Ekle: </div>
                                     <input type="text" name="enter" style="float:right; width:70%;" class="enter" id="SonucId" value="" />
                                 </li>
+                                <li>
+                                    <div>
+                                        <p style="color: #428bca; font-size: 1.3em; width:95%;" class="glyphicon">
+                                            <a id="iconTextButtonArayan" class="glyphicon glyphicon-floppy-disk" style="width:100%;" onclick="ArayanSonucEkle();">
+                                                Kaydet
+                                            </a>
+                                        </p>
+                                        <script>
+                                            $(document).ready(function () {
+                                                $("#iconTextButtonArayan").kendoButton({
+                                                });
+                                            });
+                                        </script>
+                                    </div>
+                                </li>
+                                
+                                <!--
                                 <li>
                                     <div class="buttonArea">
                                         <input type="button" value="Kaydet" class="btn btn-primary btn-block" onclick="ArayanSonucEkle();" />
                                     </div>
                                 </li>
+                                    -->
                             </ul>
                         </li>
                     </ul>
@@ -879,7 +975,7 @@
         <div data-role="layout" data-id="mobile-tabstrip">
             <header data-role="header" style="width:100%;">
                 <div data-role="navbar" style=" height:40px;">
-                    <a data-role="backbutton" class="fui-arrow-left" style="background-image:url(styles/images/back-button.png); background-size: 100%; width:81px; height:31px; float:left; margin-left:14px; margin-top:5px;"></a>
+                    <!--<a data-role="backbutton" class="fui-arrow-left" style="background-image:url(styles/images/back-button.png); background-size: 100%; width:81px; height:31px; float:left; margin-left:14px; margin-top:5px;"></a>-->
                     <span data-role="view-title" style="font-size:20px; color:darkred; margin-top:5px;"></span>
                 </div>
             </header>
@@ -888,7 +984,8 @@
                 <div id="tabstrip" data-role="tabstrip" data-select="onSelect">
                     <a id="randevu" href="#tabstrip-randevular" data-icon="recents">Randevular</a>
                     <a id="arama" href="#tabstrip-aramalar" data-icon="phone">Aramalar</a>
-                    <a id="ajanda" href="#tabstrip-ajanda" data-icon="refresh">Ajanda</a>
+                    <a id="ajanda" href="#tabstrip-ajanda" data-icon="organize">Ajanda</a>
+                    <!--<a id="geri" href="" data-icon="reply">Geri</a>-->
                     <!--<a href="#tabstrip-raporlar" data-icon="bookmarks">Raporlar</a>-->
                     <a href="#tabstrip-cikis" id="cikis" data-tap="Cikis" data-icon="more">Çıkış</a>
                 </div>

@@ -936,6 +936,7 @@ $(function () {
     });
 
     $(document).ready(function () {
+
         /*dataSource1.fetch(function () {
             
             for (var i = 0; i < this.data().length ; i++) {
@@ -1016,6 +1017,7 @@ $(function () {
     });
     //console.log("VALUE : " + $("k-state-default k-nav-current").innerHTML);
     //console.log(document);
+
 });
 
 function getBrowserWindowSize() {
@@ -1578,6 +1580,11 @@ function onSelect(e) {
         //fetchData(token);
         //ajandaRandevuFetchData(token);
     }
+    /*else if (item.attr("id") === "geri") {
+        $(document).on("click", "#geri", function () {
+            window.history.back();
+        });
+    }*/
     else if (item.attr("id") === "cikis") {
         $.ajax({
             type: "POST",
