@@ -960,9 +960,9 @@ function KendoScheduler(today) {
         // mobile: true,                   //Render edilirken mobile göre düzenlenir.
         views: [
             { type: "day" },
-            { type: "week",selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
-            //"month",
-            { type: "agenda", selected: true, selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
+            { type: "week", selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" },
+            { type: "month"},
+            { type: "agenda", selected: true, selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" }
         ],
         //editable: true,
         /*editable: {
