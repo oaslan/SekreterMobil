@@ -769,11 +769,11 @@ $(function () {
     var today = new Date();
     today = new Date(today);
     var nextDay = new Date();
-
+    
     $(function () {
         kendo.culture('tr-TR');
     });
-
+    //console.log(tarihDuzenleFormataGore(today));
     AjandaRandevuFetchData(token, today);
     //----------------------------------------------------------------
     $(document).ready(function () {
@@ -1473,7 +1473,8 @@ function ArayanSonucEkle()
 };
 
 function tarihDuzenle(value) {
-    var day;
+    
+    /*var day;
     var month;
     var year = value.getFullYear(); 
     if ((value.getDate().toString().length > 1) && ((value.getMonth() + 1).toString().length > 1))
@@ -1492,7 +1493,10 @@ function tarihDuzenle(value) {
         month = "0" + (value.getMonth() + 1);
     }
 
-    return (day + "." + month + "." + year);
+    return (day + "." + month + "." + year);*/
+
+    return (value).format("dd.mm.yyyy");
+
     //var day = ("0" + value.getDate()).slice(-2);
     //var month = ("0" + (value.getMonth() + 1)).slice(-2);
     //var year = value.getFullYear();

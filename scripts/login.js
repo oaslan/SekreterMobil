@@ -19,7 +19,7 @@
                 return;
             }
             $.ajax({
-	            type: "POST",
+                type: "POST",
                 url: app.endpoints.login,
 	            //url: "http://localhost/Rektorluk/api/Auth/Login",
 	            data: { "Kullanici" : Kullanici, "Sifre" : Sifre },
@@ -30,7 +30,7 @@
 	            success: function (d) {
 	                if (d.durum) {
 	                    window.localStorage.setItem("accessToken", d.accessToken);
-                        console.log(window.localStorage.getItem("accessToken"));
+                        //console.log(window.localStorage.getItem("accessToken"));
 	                    window.location = "index_logged.html";
 	                }
 	                else {
