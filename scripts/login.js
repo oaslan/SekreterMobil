@@ -101,7 +101,7 @@ function MevcutIPGoster()
         console.log("adres : " + kontrol);
         if (kontrol === undefined || kontrol === null) {
             window.localStorage.setItem("ipAdres", "localhost");
-            alert(window.localStorage.getItem("ipAdres"));
+            //alert(window.localStorage.getItem("ipAdres"));
         }
 
         //var mevcutIP = getIP();
