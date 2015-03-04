@@ -2,6 +2,7 @@ var scope, token;
 var RandevuId;
 var ArayanId;
 var dataSource1;
+var AjandaToday;
 app = window.app = window.app || {};
 
 angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', function ($scope) {
@@ -12,6 +13,8 @@ angular.module('belediyeModul', []).controller('belediyeCTRL', ['$scope', functi
     $scope.SecilenRandevu = [];
     $scope.SecilenArayan = [];
     $scope.AjandaRandevular = [];
+    $scope.RandevuTipi = 1; // Default randevu tipi 1 : Resmi ; 2 : Özel
+    $scope.selectedRandevuTipi;
 
     $scope.Set_Color = function (payment) {
         if (payment == "1") {
@@ -769,19 +772,30 @@ $(function () {
     var today = new Date();
     today = new Date(today);
     var nextDay = new Date();
-    
+
     $(function () {
         kendo.culture('tr-TR');
     });
-    //console.log(tarihDuzenleFormataGore(today));
+    AjandaToday = today;
     AjandaRandevuFetchData(token, today);
     //----------------------------------------------------------------
     $(document).ready(function () {
+
+        //Özel randevuların gözükmesi için gerekli setlemeler yetki bazında gerçekleşir.
+        $("#select-randevu-ozel-bazinda").hide();
+        $("#select-ajanda-ozel-bazinda").hide();
+        if (window.localStorage.OzelRandevularGozuksun === "true") {
+            $("#select-randevu-ozel-bazinda").show();
+            $("#select-ajanda-ozel-bazinda").show();
+            $("#scheduler-randevu-ozel").show();
+        }
 
         KendoScheduler(today);
 
         var scheduler3 = $("#scheduler").data("kendoScheduler");
         var AjandaTarih1 = scheduler3.date();
+
+
 
         //$("#SchedulerDatePicker")[0].childNodes[0].childNodes[0].value = (AjandaTarih1.getDate().toString().length > 1 ? AjandaTarih1.getDate() : ("0" + AjandaTarih1.getDate())) + "." + ((AjandaTarih1.getMonth() + 1).toString().length > 1 ? (AjandaTarih1.getMonth() + 1) : ("0" + (AjandaTarih1.getMonth() + 1))) + "." + AjandaTarih1.getFullYear();
         $("#SchedulerDatePicker").kendoDatePicker({
@@ -857,6 +871,16 @@ $(function () {
     });
 
     $(document).ready(function () {
+
+        // create DropDownList from input HTML element
+        $("#rTipiComboBox").kendoDropDownList({
+            dataTextField: "text",
+            dataValueField: "value",
+            dataSource: [
+                { text: "Resmi", value: "1" },
+                { text: "Özel", value: "2" }
+            ]
+        });
 
         /*dataSource1.fetch(function () {
             
@@ -946,6 +970,14 @@ function KendoScheduler(today) {
 
     //console.log(getBrowserWindowSize().height);
 
+
+    //Kullanıcı sadece readonly ise için gerekli setlemeler yetki bazında gerçekleşir.
+    var IsCreateAndUpdateIsReadOnly = false;
+    if (window.localStorage.SadeceOkusun === "false") {
+        IsCreateAndUpdateIsReadOnly = true;
+    }
+    
+
     $("#scheduler").kendoScheduler({
         date: new Date(today),/*new Date("2014/01/16"),*/
         startTime: new Date("2013/6/13 8:00"),
@@ -956,7 +988,7 @@ function KendoScheduler(today) {
         majorTick: 60,                  // Soldaki saat aralığı.(1 saat)
         showWorkHours: false,           // İlk açılışta mesai saatlerini göstermesin tümünü göstersin.
         allDaySlot: false,              // Gridin üstüne allDay satırını kaldırır.
-        minorTickCount: 4,             // İki saat arasının kaç aralığa bölünmesi gerektiğini setler.
+        minorTickCount: 2,             // İki saat arasının kaç aralığa bölünmesi gerektiğini setler.
         // mobile: true,                   //Render edilirken mobile göre düzenlenir.
         views: [
             { type: "day" },
@@ -964,6 +996,20 @@ function KendoScheduler(today) {
             { type: "month"},
             { type: "agenda", selected: true, selectedDateFormat: "{0:dd.MM.yyyy} - {1:dd.MM.yyyy}" }
         ],
+        edit: scheduler_edit,
+        /*resources: [{
+            field: "taskId",
+            title: "TASK",
+            dataSource: [{
+                text: "Resmi",
+                value: 1,
+                color: "#f8a398"
+            }, {
+                text: "Özel",
+                value: 2,
+                color: "#51a0ed"
+            }]
+        }],*/
         //editable: true,
         /*editable: {
             destroy: false,                                      //Event detaya tıklandığında silme işlemi disable edilir.
@@ -971,9 +1017,9 @@ function KendoScheduler(today) {
             create: true
         },*/
         editable: {
-            update: true,
+            update: IsCreateAndUpdateIsReadOnly,
             destroy: false,
-            create: true,
+            create: IsCreateAndUpdateIsReadOnly,
             template: kendo.template($("#scheduler-template").html())
         },
         eventTemplate: $("#event-template").html(),             //Gridde gösterilecek randevu içeriği.
@@ -1025,6 +1071,51 @@ function KendoScheduler(today) {
     });
 }
 
+function scheduler_edit(e) {
+    $("#scheduler-randevu-ozel").hide();
+    $("#select-resmi-ozel-textbox").hide();
+    if (window.localStorage.OzelRandevularGozuksun === "true") {
+        $("#scheduler-randevu-ozel").show();
+    }
+
+    var ranTipi = e.event.randevuTipi === 1 ? 0 : 1;
+
+   if ($("#select-resmi-ozel")[0].dataset.role !== "buttongroup") {
+        //console.log(e);
+        $("#select-resmi-ozel").kendoMobileButtonGroup({
+            select: function (ex) {
+                if (ex.index === 0)//Resmi Randevular
+                {
+                    e.event.randevuTipi = 1;
+                    $("#select-resmi-ozel-textbox").focus();
+                    $("#select-resmi-ozel-textbox").val("1");
+                }
+                else if (ex.index === 1)// Özel Randevular 
+                {
+                    e.event.randevuTipi = 2;
+                    $("#select-resmi-ozel-textbox").focus();
+                    $("#select-resmi-ozel-textbox").val("2");
+                    //scheduler.addEvent({ randevuTipi: "aaa" });
+                }
+            },
+            index: ranTipi
+        });
+   }
+
+   var scheduler = $("#scheduler").data("kendoScheduler");
+   scheduler.bind("save", scheduler_save);
+
+}
+
+function scheduler_save(e) {
+    //var scheduler = $("#scheduler").data("kendoScheduler");
+    //console.log(scheduler);
+    //console.log(dataSource1);
+    //scheduler.options.dataSource.transport.update();
+    //console.log(e);
+   
+};
+
 function getBrowserWindowSize() {
     var myWidth = 0, myHeight = 0;
     if (typeof (window.innerWidth) == 'number') {
@@ -1059,7 +1150,7 @@ function RandevuGetirById(RandevuId) {
     if (token === undefined || token === null || token === "")
         window.location = "index.html";
     scope = angular.element(document.getElementById("belediyeCTRL")).scope();
-
+    
     $.ajax({
         type: "POST",
         data: { 'accessToken': token, SecilenRandevuId: RandevuId },
@@ -1067,12 +1158,20 @@ function RandevuGetirById(RandevuId) {
         dataType: "json",
         crossDomain: true,
         success: function (result) {
-            //console.log(result);
+            console.log(result);
             if (result != null) {
                 scope.$apply(function () {
                     scope.SecilenRandevu = result.SecilenRandevu;
                     window.location.href = "#RandevuDetay";
                 });
+
+                //Kullanıcı sadece readonly ise için gerekli setlemeler yetki bazında gerçekleşir.
+                $("#randevu-detay-aciklamaekle").hide();
+                $("#randevu-detay-aciklamaeklebtn").hide();
+                if (window.localStorage.SadeceOkusun === "false") {
+                    $("#randevu-detay-aciklamaekle").show();
+                    $("#randevu-detay-aciklamaeklebtn").show();
+                }
             }
             else {
                 window.localStorage.removeItem("accessToken");
@@ -1104,7 +1203,7 @@ function AjandaRandevuFetchData(accessToken, bugun){
             read: function (options) {
                 $.ajax({
                     type: "POST",
-                    data: { 'accessToken': accessToken, Tarih: tarihDuzenleFormataGore(bugun)/*Tarih: "16.01.2011"*/ },
+                    data: { 'accessToken': accessToken, Tarih: tarihDuzenleFormataGore(bugun)/*Tarih: "16.01.2011"*/, RandevuTipi: scope.RandevuTipi  },
                     url: app.endpoints.ajandaRandevuDetay,
                     dataType: "json",
                     beforeSend: function () { app.application.showLoading(); },
@@ -1155,7 +1254,7 @@ function AjandaRandevuFetchData(accessToken, bugun){
                 });
             },
             update: function (options) {
-                //console.log(options.data.models[0].Id);
+                //console.log(options);
                 //console.log(options.data.models[0].BitisTarihi);
                 var basTarihi = tarihDuzenleFormataGore(options.data.models[0].BaslamaTarihi);
                 var bitTarihi = tarihDuzenleFormataGore(options.data.models[0].BitisTarihi);
@@ -1193,6 +1292,9 @@ function AjandaRandevuFetchData(accessToken, bugun){
                         , HatirlatmaRenk: "2"
                         , KatilimciRenk: "3"
                         , Silindi: "0"
+                        , RandevuTipi: options.data.models[0].RandevuTipi
+                        , UygulamaninKullandigiRandevuTipi: scope.RandevuTipi
+                        //, RandevuTipi: $("#select-resmi-ozel-textbox").val()
                     },
                     url: app.endpoints.ajandaRandevuGuncelle,
                     dataType: "json",
@@ -1265,6 +1367,8 @@ function AjandaRandevuFetchData(accessToken, bugun){
                         , HatirlatmaRenk: "2"
                         , KatilimciRenk: "3"
                         , Silindi: "0"
+                        , RandevuTipi: options.data.models[0].RandevuTipi
+                        , UygulamaninKullandigiRandevuTipi: scope.RandevuTipi
                     },
                     url: app.endpoints.ajandaRandevuEkle,
                     dataType: "json",
@@ -1298,7 +1402,7 @@ function AjandaRandevuFetchData(accessToken, bugun){
                         alert("Yeni kayıt oluşumu sırasında bir hata meydana geldi.");
                     }
                 });
-            },
+            }
         },
         schema: {
             model: {
@@ -1324,7 +1428,8 @@ function AjandaRandevuFetchData(accessToken, bugun){
                     hatirlatmaRenk: { from: "HatirlatmaRenk" },
                     katilimciRenk: { from: "KatilimciRenk" },
                     silindi: { from: "Silindi" },
-                    yoneticiId: { from: "YoneticiId" }                    
+                    yoneticiId: { from: "YoneticiId" },
+                    randevuTipi: { from: "RandevuTipi", type: "number", defaultValue: 1, validation: { required: true } }
                     //startTimezone: { from: "Baslama,Saati" },
                     //endTimezone: { from: "BitisSaati" },
                     //recurrenceId: { from: "RecurrenceID" },
@@ -1336,6 +1441,8 @@ function AjandaRandevuFetchData(accessToken, bugun){
             }
         }
     });
+
+
     /* 
     // dataSource1 üzerinden 0 konumundaki verinin title sını çeker.
     dataSource1.fetch(function () {
@@ -1376,6 +1483,13 @@ function ArayanClick(value)
                     scope.SecilenArayan = result.SecilenArayan;
                     window.location.href = "#ArayanDetay";
                 });
+                //Kullanıcı sadece readonly ise için gerekli setlemeler yetki bazında gerçekleşir.
+                $("#arayan-detay-sonucekle").hide();
+                $("#arayan-detay-sonuceklebtn").hide();
+                if (window.localStorage.SadeceOkusun === "false") {
+                    $("#arayan-detay-sonucekle").show();
+                    $("#arayan-detay-sonuceklebtn").show();
+                }
             }
             else {
                 window.localStorage.removeItem("accessToken");
@@ -1473,7 +1587,6 @@ function ArayanSonucEkle()
 };
 
 function tarihDuzenle(value) {
-    
     /*var day;
     var month;
     var year = value.getFullYear(); 
@@ -1493,13 +1606,11 @@ function tarihDuzenle(value) {
         month = "0" + (value.getMonth() + 1);
     }
 
-    return (day + "." + month + "." + year);*/
-
-    return (value).format("dd.mm.yyyy");
-
+    return (day + "." + month + "." + year);
     //var day = ("0" + value.getDate()).slice(-2);
     //var month = ("0" + (value.getMonth() + 1)).slice(-2);
-    //var year = value.getFullYear();
+    //var year = value.getFullYear();*/
+    return (value).format("dd.mm.yyyy");
 };
 
 function tarihDuzenleFormataGore(value){
@@ -1555,7 +1666,7 @@ function fetchData(accessToken) {
         //var data = { accessToken: accessToken };
         $.ajax({
             type: "POST",
-            data: { 'accessToken': accessToken, Tarih: getTarih() },
+            data: { 'accessToken': accessToken, Tarih: getTarih(), RandevuTipi: scope.RandevuTipi },
             url: app.endpoints.baskanView,
             dataType: "json",
             beforeSend: function () { app.application.showLoading(); },
@@ -1589,12 +1700,34 @@ function onSelect(e) {
         fetchData(token);
     }
     else if (item.attr("id") === "randevu") {
+        var buttongroup = $("#select-resmi-ozel-bazinda").data("kendoMobileButtonGroup");
+        if (buttongroup !== null || buttongroup !== undefinded) {
+            if (scope.RandevuTipi === 1) { // Resmi
+                buttongroup.select(0);
+            }
+            else if (scope.RandevuTipi === 2) { // Özel
+                buttongroup.select(1);
+            }
+        }
+
         $("#tarihList").prependTo("#tabstrip-randevular");
         fetchData(token);
     }
     else if (item.attr("id") === "ajanda") {
+        var buttongroup = $("#select2-resmi-ozel-bazinda").data("kendoMobileButtonGroup");
+        if (buttongroup !== null || buttongroup !== undefinded) {
+            if (scope.RandevuTipi === 1) { // Resmi
+                buttongroup.select(0);
+            }
+            else if (scope.RandevuTipi === 2) { // Özel
+                buttongroup.select(1);
+            }
+        }
+
         dataSource1.read();
         $("#scheduler").data("kendoScheduler").refresh();
+
+        
        //$("#tarihList").prependTo("#tabstrip-ajanda");
         //fetchData(token);
         //ajandaRandevuFetchData(token);
@@ -1622,3 +1755,50 @@ function onSelect(e) {
         });
     }
 };
+
+function ResmiOzelGoruntuleSelectShow() {
+    
+    // İlgili ekran çağrıldığında eğer daha önceden çağrılmışsa grid iki kere oluşturulmaz sadece grid içindeki veriler değiştirilir.
+    if ($("#select-resmi-ozel-bazinda")[0].dataset.role !== "buttongroup") {
+        $("#select-resmi-ozel-bazinda").kendoMobileButtonGroup({
+            select: function (e) {
+                if (e.index === 0) {                    //Resmi Randevular
+                    scope.$apply(function () {
+                        scope.RandevuTipi = 1;
+                    });
+                }
+                else if (e.index === 1) {               // Özel Randevular
+                    scope.$apply(function () {
+                        scope.RandevuTipi = 2;
+                    });
+                }
+                fetchData(token);
+                dataSource1.read();
+                $("#scheduler").data("kendoScheduler").refresh();
+            },
+            index: 0
+        });
+    }
+
+    // İlgili ekran çağrıldığında eğer daha önceden çağrılmışsa grid iki kere oluşturulmaz sadece grid içindeki veriler değiştirilir.
+    if ($("#select2-resmi-ozel-bazinda")[0].dataset.role !== "buttongroup") {
+        $("#select2-resmi-ozel-bazinda").kendoMobileButtonGroup({
+            select: function (e) {
+                if (e.index === 0) {                    //Resmi Randevular
+                    scope.$apply(function () {
+                        scope.RandevuTipi = 1;
+                    });
+                }
+                else if (e.index === 1) {               // Özel Randevular
+                    scope.$apply(function () {
+                        scope.RandevuTipi = 2;
+                    });
+                }
+                fetchData(token);
+                dataSource1.read();
+                $("#scheduler").data("kendoScheduler").refresh();
+            },
+            index: 0
+        });
+    }
+}

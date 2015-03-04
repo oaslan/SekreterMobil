@@ -22,56 +22,58 @@
 <body onload="onLoad()">
     
     <!--Login-->
-    <div id="tabstrip-login"
-        data-role="view"
-        data-title="Kullanıcı Girişi"
-        data-model="app.loginService.viewModel">
-        <a href="#ayarlar" class="fui-gear" style="margin-left:25px; margin-top:10px; width:21px; height:21px" onclick="MevcutIPGoster()">  </a>
-        
-       <!-- <div class="btn-group-vertical">
-            <button type="button" class="btn btn-primary btn-block"><i class="glyphicon glyphicon-cog"></i></button>
-        </div>-->
+    
 
-        <div class="view-content">
-            <form data-bind="events: { keyup: checkEnter }">
-                <ul data-role="listview" data-style="inset" data-bind="invisible: isLoggedIn">
-                    <li>
-                        <label>
-                            Kullanıcı Adı
-                                <input type="text" data-bind="value: Kullanici"/>
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            Şifre
-                                <input type="password" data-bind="value: Sifre" />
-                        </label>
-                    </li>
-                    <li>
-                        <div class="buttonArea">
-                            <input type="submit" id="login" data-role="button" class="btn btn-primary btn-block" data-bind="click: onLogin, invisible: isLoggedIn" value="Giriş" />
-                        </div>
-                    </li>
-                </ul>
-            </form>
-        </div>
+    <div id="tabstrip-login"
+         data-role="view"
+         data-title="Kullanıcı Girişi"
+         data-model="app.loginService.viewModel">
+        <ul data-role="listview" data-style="inset" data-type="group" class="km-widget km-listview km-listgroupinset" style="height:40px;">
+            <li style="width:100%;" class="km-group-container">
+                <a href="#ayarlar" data-align="left" class="fui-gear" style="float:left;margin-left:10px; margin-top:10px; width:30px; height:30px;font-size:18px;" onclick="MevcutIPGoster()">  </a>
+            </li>
+        </ul>
+        
+        <ul id="view-giris-ul2" data-role="listview" data-style="inset" data-type="group" class="km-widget km-listview km-listgroupinset">
+            <li class="km-group-container" >
+                <form data-bind="events: { keyup: checkEnter }">
+                    <ul data-role="listview" data-style="inset" data-bind="invisible: isLoggedIn" style="margin:0;">
+                        <li id="login-kullanicisifre" style="border-bottom-color:white;line-height:1em;border-bottom: 1px solid rgba(244, 233, 233, 0.49);padding-bottom: 10px;">
+                            <span class="km-icon km-user-e" style="float:left;margin:1px 0 0 8px;font-size: 1em;"></span>
+                            <input type="text" data-bind="value: Kullanici" placeholder="Kullanıcı Adı" style="float:right;width:100%;font-size: 1em;padding-left: 40px;" />
+                        </li>
+                        <li id="login-kullanicisifre" style="border-bottom-color:white;line-height:1em;border-bottom: 1px solid rgba(244, 233, 233, 0.49);padding-bottom: 10px;">
+                            <span class="km-icon km-lock-e" style="float:left;margin:1px 0 0 4px;font-size: 1em;"></span>
+                            <input type="password" data-bind="value: Sifre" placeholder="Şifre" style="float:right;width:100%;font-size: 1em;padding-left: 40px;" />
+                        </li>
+                        <li id="login-button">
+                            <div>
+                                <a data-role="button" data-rel="view" data-transition="slide:left" data-align="left" data-bind="click: onLogin, invisible: isLoggedIn" style=" min-width:105px; width:100%;border-right-color:white;font-size: 1em;text-align:center;">
+                                    Giriş<span class="km-icon km-login-e" style="text-align:center;margin:2px 0 0 4px;"></span>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </li>
+        </ul>
     </div>
     
     <div id="ayarlar" data-role="view" data-title="Ayarlar">
-        <div class="view-content">
+        <div class="view-content" style="margin-top: 20px;">
             <form data-bind="events: { keyup: checkEnter }">
                 <ul data-role="listview" data-style="inset">
-                    <li>
-                        <div style="float:left; width:40%">Mevcut Servis IP: </div>
-                        <div style="float:right; width:60%; text-align:right"><span id="MevcutServisIP"></span></div>
+                    <li style="border-bottom: 1px solid rgba(244, 233, 233, 0.49);padding-bottom: 10px;">
+                        <div style="float:left; width:40%; font-size:.8em;text-align:left;">Mevcut Servis IP: </div>
+                        <div style="float:right; width:60%; text-align:right;font-size:.8em;"><span id="MevcutServisIP"></span></div>
                     </li>
-                    <li>
-                        <div style="float:left; width:40%" class="k-input">Yeni Servis IP: </div>
-                        <input type="text" name="enter" style="float:right; width:60%;" class="enter" id="yeniServisIP" value="" />
+                    <li style="border-bottom: 1px solid rgba(244, 233, 233, 0.49);padding-bottom: 10px;">
+                        <div style="float:left; width:40%;font-size:.8em;text-align:left;" class="k-input">Yeni Servis IP: </div>
+                        <input type="text" name="enter" style="float:right; width:60%;font-size:.8em;" class="enter" id="yeniServisIP" value="" />
                     </li>
                     <li>
                         <div style="float:right">
-                            <div class="buttonArea" style="float:left">
+                            <div class="buttonArea" style="float:left;border-right: 1px solid rgba(244, 233, 233, 0.49);">
                                 <input type="submit" id="kaydet" data-role="button" class="btn btn-primary btn-block" onclick="Kaydet(this)" value="Kaydet" />
                             </div>
                             <div class="buttonArea" style="float:right">
@@ -85,13 +87,20 @@
     </div>
 
     <!--Layout-->
-    <div data-role="layout" data-id="tabstrip-layout">
+    <div id="giris-layout" data-role="layout" data-id="tabstrip-layout">
         <!--Header-->
-        <div data-role="header">
-            <div data-role="navbar">
-                <span data-role="view-title"></span>
+        <header data-role="header">
+            <div id="giris-layout-header-div" data-role="navbar">
+                <span id="giris-layout-span" class="km-icon km-giris-e" style="margin:10px 0 0 4px;"></span>&nbsp;&nbsp;Kullanıcı Girişi
             </div>
-        </div>
+        </header>
+        <!--<footer data-role="footer">
+            <div data-role="footer">
+                <div id="footerDiv2"><img src="images/logobeyaz.png" /></div>
+            </div>
+        </footer>-->
     </div>
+
+
 </body>
 </html>

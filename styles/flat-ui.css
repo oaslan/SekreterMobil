@@ -657,8 +657,8 @@ fieldset[disabled] .btn-primary.active {
 .btn-info:active,
 .btn-info.active,
 .open .dropdown-toggle.btn-info {
-  background: #2c81ba;
-  border-color: #2c81ba;
+  background: darkred;
+  border-color: darkred;
 }
 .btn-info.disabled,
 .btn-info[disabled],

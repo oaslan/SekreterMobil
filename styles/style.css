@@ -418,5 +418,23 @@ text-decoration:underline;
 color: #fff;
 }
 
+.km-flat .km-loader, .km-flat .km-rowinsert, .km-flat .km-state-active, .km-flat .km-scroller-pull, .km-flat .k-slider-selection, .km-flat .km-touch-scrollbar, .km-flat .km-pages .km-current-page, .km-flat .k-slider .k-draghandle, .km-flat .k-slider .k-draghandle:hover, .km-flat .km-tabstrip .km-state-active, .km-flat .km-scroller-refresh.km-load-more, .km-flat .km-popup .k-state-hover, .km-flat .km-popup .k-state-focused, .km-flat .km-popup .k-state-selected, .km-flat .km-actionsheet>li>a:active, .km-flat .km-actionsheet>li>a:hover, .km-flat li.km-state-active .km-listview-link, .km-flat li.km-state-active .km-listview-label, .km-flat .km-listview-label input[type=radio]:checked, .km-flat .km-listview-label input[type=checkbox]:checked {
+
+background: darkred;
+}
+
+.k-state-selected, .k-state-selected:link, .k-state-selected:visited, .k-list>.k-state-selected, .k-list>.k-state-highlight, .k-panel>.k-state-selected, .k-ghost-splitbar-vertical, .k-ghost-splitbar-horizontal, .k-draghandle.k-state-selected:hover, .k-scheduler .k-scheduler-toolbar .k-state-selected, .k-scheduler .k-today.k-state-selected, .k-marquee-color {
+color: #fff;
+background-color: darkred;
+border-color: darkred;
+}
+
+.km-listview-wrapper+*:not(.km-listview-wrapper) {
+margin-top: .3em;
+}
+
+
+
+
 
 

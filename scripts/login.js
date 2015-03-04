@@ -30,6 +30,8 @@
 	            success: function (d) {
 	                if (d.durum) {
 	                    window.localStorage.setItem("accessToken", d.accessToken);
+	                    window.localStorage.setItem("SadeceOkusun", d.sadeceokusun);
+	                    window.localStorage.setItem("OzelRandevularGozuksun", d.ozelrandevulargozuksun);
                         //console.log(window.localStorage.getItem("accessToken"));
 	                    window.location = "index_logged.html";
 	                }
